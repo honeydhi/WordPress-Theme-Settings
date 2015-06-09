@@ -95,374 +95,112 @@ array( "name" => "Second Block Title",
 		"std" => ""),
 array( "name" => "Second Block Discription",
 		"desc" => "Enter Your Home Page Second Block Discription ",
-
-
-
 		"id" => $shortname."_second_dis",
-
-
-
 		"type" => "textarea",
-
 		"std" => ""),
 
 array( "name" => "Second Block Image",
-
 		"desc" => "Upload Your Home Page Second Block Image ",
-
-
-
 		"id" => $shortname."_second_image",
-
-
-
 		"type" => "upload",
-
 		"std" => ""),
 
 
 array( "name" => "Third Block Title",
-
 		"desc" => "Enter Your Home Page Third Block Title ",
-
 		"id" => $shortname."_third_block",
-
 		"type" => "text",
-
 		"std" => ""),
 
 array( "name" => "Third Block Discription",
-
-		"desc" => "Enter Your Home Page Third Block Title ",
-
+"desc" => "Enter Your Home Page Third Block Title ",
 		"id" => $shortname."_third_dis",
-
 		"type" => "textarea",
-
 		"std" => ""),
-
 array( "name" => "Third Block Image",
-
 		"desc" => "Upload Your Home Page Third Block Image ",
-
 		"id" => $shortname."_third_img",
-
 		"type" => "upload",
-
 		"std" => ""),
 
 
 array( "type" => "close"),
-
-
-
 //Footer Settings--------------------------------------------------------------
-
-
-
 array( "name" => "Footer Settings",
-
-
 		"type" => "section"),
 
-
-
 array( "type" => "open"),
-
-
 array( "name" => "Copy Right Text",
-
 		"desc" => "Enter Copy Right Text",
-
 		"id" => $shortname."_copyright",
-
 		"type" => "text",
-
 		"std" => ""),
 
-
 array( "type" => "close"),
-
-
 );
-
-
-
 function mytheme_add_admin() {
-
-
 global $themename, $shortname, $options;
-
-
-
- 
-
-
-
 if ( $_GET['page'] == basename(__FILE__) ) {
-
-
-
- 
-
-
-
-	if ( 'save' == $_REQUEST['action'] ) {
-
-
-
- 
-
-
-
+		if ( 'save' == $_REQUEST['action'] ) {
 		foreach ($options as $value) {
-
-
-
-		update_option( $value['id'], $_REQUEST[ $value['id'] ] ); }
-
-
-
- 
-
-
-
-foreach ($options as $value) {
-
-
-
-	if( isset( $_REQUEST[ $value['id'] ] ) ) { update_option( $value['id'], $_REQUEST[ $value['id'] ]  ); } else { delete_option( $value['id'] ); } }
-
-
-
- 
-
-
-
-	header("Location: admin.php?page=admin_menu.php&saved=true");
-
-
-
-	die;
-
-
-
+				update_option( $value['id'], $_REQUEST[ $value['id'] ] ); 
+			}
+		foreach ($options as $value) {
+			if( isset( $_REQUEST[ $value['id'] ] ) ) { 
+				update_option( $value['id'], $_REQUEST[ $value['id'] ]  ); } 
+			else { delete_option( $value['id'] ); } 
+			}
+			header("Location: admin.php?page=admin_menu.php&saved=true");
+			die;
 	}
-
-
-
-	
-
-
-
-else if( 'reset' == $_REQUEST['action'] ) {
-
-
-
- 
-
-
-
-	foreach ($options as $value) {
-
-
-
-		delete_option( $value['id'] ); }
-
-
-
- 
-
-
-
-	header("Location: admin.php?page=admin_menu.php&reset=true");
-
-
-
-	die;
-
-
-
-	}
-
-
-
+	else if( 'reset' == $_REQUEST['action'] ) {
+		foreach ($options as $value) {
+			delete_option( $value['id'] ); }
+			header("Location: admin.php?page=admin_menu.php&reset=true");
+			die;
+		}
 }
-
-
-
-
-
-
-
 add_menu_page($themename, $themename, 'administrator', basename(__FILE__), 'mytheme_admin');
-
-
-
 }
 
-
-
-
-
-
-
+/*Add all the css files and Jquery*/
 function mytheme_add_init() {
-
-
-
-
-
-
-
-$file_dir=get_bloginfo('template_directory');
-
-
-
-wp_enqueue_style("functions", $file_dir."/optionpage/functions.css", false, "1.0", "all");
-
-
-
-wp_enqueue_style("functions", $file_dir."/optionpage/admin-style.css", false, "1.0", "all");
-
-
-
-wp_enqueue_script("am_script", $file_dir."/optionpage/am_script.js", false, "1.0");
-
-wp_enqueue_script("upload_box", $file_dir."/optionpage/upload_box.js", false, "1.0");
-
-wp_enqueue_script('media-upload');
-
-wp_enqueue_script('thickbox');
-
-wp_register_script('my-upload', get_bloginfo( 'stylesheet_directory' ) . '/js/uploader.js', array('jquery','media-upload','thickbox'));
-
-wp_enqueue_script('my-upload');
-
-wp_enqueue_style('thickbox');
-
-
-
+	$file_dir=get_bloginfo('template_directory');
+	wp_enqueue_style("functions", $file_dir."/optionpage/functions.css", false, "1.0", "all");
+	wp_enqueue_style("functions", $file_dir."/optionpage/admin-style.css", false, "1.0", "all");
+	wp_enqueue_script("am_script", $file_dir."/optionpage/am_script.js", false, "1.0");
+	wp_enqueue_script("upload_box", $file_dir."/optionpage/upload_box.js", false, "1.0");
+	wp_enqueue_script('media-upload');
+	wp_enqueue_script('thickbox');
+	wp_register_script('my-upload', get_bloginfo( 'stylesheet_directory' ) . '/js/uploader.js', array('jquery','media-upload','thickbox'));
+	wp_enqueue_script('my-upload');
+	wp_enqueue_style('thickbox');
 }
 
 
 
 function mytheme_admin() {
-
-
-
- 
-
-
-
 global $themename, $shortname, $options;
-
-
-
 $i=0;
-
-
-
- 
-
-
-
 if ( $_REQUEST['saved'] ) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' settings saved.</strong></p></div>';
-
-
-
 if ( $_REQUEST['reset'] ) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' settings reset.</strong></p></div>';
-
-
-
- 
-
-
-
 ?>
-
-
-
 <div class="wrap am_wrap">
-
-
-
 	<h2><?php echo $themename; ?> Options Panel</h2>
-
-
-
 	<div class="am_opts">
-
-
-
-		<form method="post">
-
-
-
+	<form method="post">
 		<?php foreach ($options as $value) {
-
-
-
 			switch ( $value['type'] ) {
-
-
-
-
-
-
-
 			case "open":
-
-
-
-			?>
-
-
-
- 
-
-
-
+		?>
 <?php break; 
-
-
-
 case "close":
-
-
-
 ?>
-
-
-
- 
-
-
-
-	</div>
-
-
-
 </div>
-
-
-
+</div>
 <br/>
-
-
-
- 
-
-
-
 <?php break;
-
-
-
 case "title":
-
-
-
 ?>
 
 
