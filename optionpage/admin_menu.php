@@ -1,369 +1,99 @@
 <?php
-
-$themename = "Custom Toll Free";
-
-
-
+$themename = "Enter your theme";
 $shortname = "wpc";
-
-
-
 /* Get Categories
-
-
-
 ------------------------------ */
-
-
-
 $categories = get_categories('hide_empty=1&orderby=name');
-
-
-
 $wp_cats = array();
-
-
-
 	foreach ($categories as $category_list ) {
-
-
-
 		$wp_cats[$category_list->cat_ID] = $category_list->cat_name;
-
-
-
 }
-
-
-
 /*array_unshift($wp_cats, "Choose a category");*/
-
-
-
-
-
-
-
-
-
-
-
-/* Get Page Link
-
-
-
------------------------------- */
-
-
-
+/* Get Page Link------------------------------ */
 $pages = get_pages('hide_empty=0&orderby=name'); 
-
-
-
 $wp_pag = array();
-
-
-
 	foreach ($pages as $pagg) {
-
-
-
 		$wp_pag[ $pagg->ID ]= $pagg->post_title;
-
-
-
-		
-
-
-
 }
-
-
-
 //array_unshift($wp_pag, "Choose page");
-
-
-
-
-
-
-
-
-
-
-
-/* =Option Panel
-
-
-
-------------------------------------------------------------------------------------------------------------------------------*/
-
-
-
+/* =Option Panel------------------------------------------------------------------------------------------------------------------------------*/
 $options = array (
-
-
-
-
-
-
-
 array( "name" => $themename." Options",
-
-
-
 		"type" => "title"),
-
-
-
-		
-
-
-
 /* =Header Settings
-
-
-
 ------------------------------------------------------------------------------------------------------------------------------*/
-
-
-
 array( "name" => "Header Settings",
-
-
-
 		"type" => "section"),
-
-
 array( "type" => "open"),
-
-
 array( "name" => "Phone Number",
-
-
-
 		"desc" => "Enter Your Phone number here.",
-
-
-
 		"id" => $shortname."_pho",
-
-
-
 		"type" => "text",
-
-
-
 		"std" => ""),
-
-		
 array( "name" => "Logo",  
-
-
-
 "desc" => "Upload Logo image  here",  
-
-
-
 "id" => $shortname."_upload_one",  
-
-
-
 "type" => "upload",  
-
-
-
 "std" => ""), 
-
-
 array( "type" => "close"),
-
-
-
-/* =Header Settings
-
-
-------------------------------------------------------------------------------------------------------------------------------*/
-
+/* =Header Settings------------------------------------------------------------------------------------------------------------------------------*/
 array( "name" => "Social Media Settings",
-
-
-
 		"type" => "section"),
-
-
 array( "type" => "open"),
-
-
 array( "name" => "Google Plus LinK",
-
-
-
 		"desc" => "Enter Your Google Plus Link here.",
-
-
-
 		"id" => $shortname."_goo",
-
-
-
 		"type" => "text",
-
-
-
 		"std" => ""),
-
-
 array( "name" => "Facebook LinK",
-
-
-
 		"desc" => "Enter Your Facebook Link here.",
-
-
-
 		"id" => $shortname."_face",
-
-
-
 		"type" => "text",
-
-
-
 		"std" => ""),
-
-
-
 array( "name" => "Twitter LinK",
-
-
-
 		"desc" => "Enter Your Twitter Link here.",
-
-
-
 		"id" => $shortname."_tlink",
-
-
-
 		"type" => "text",
-
-
-
 		"std" => ""),
-
-
 array( "name" => "Youtube LinK",
-
-
-
 		"desc" => "Enter Your Youtube Link here.",
-
-
-
 		"id" => $shortname."_you",
-
-
-
 		"type" => "text",
-
-
-
 		"std" => ""),
-
-
-
 array( "name" => "Rss LinK",
-
-
-
 		"desc" => "Enter Your Rss Link here.",
-
-
-
 		"id" => $shortname."_rss",
-
-
-
 		"type" => "text",
-
-
-
 		"std" => ""),
-
-
 array( "type" => "close"),
-
-
-
 /* =Homepage Settings
-
-
-
 ------------------------------------------------------------------------------------------------------------------------------*/
 
 array( "name" => "Homepage Settings",
-
-
-
 		"type" => "section"),
-
-
-
-
 array( "type" => "open"),
-
-
 array( "name" => "First Block Title",
-
 		"desc" => "Enter Your Home Page First Block Title ",
-
 		"id" => $shortname."_first_block",
-
 		"type" => "text",
-
 		"std" => ""),
-
 array( "name" => "First Block Discription",
-
 		"desc" => "Enter Your Home Page First Block Discription ",
-
 		"id" => $shortname."_first_dis",
-
 		"type" => "textarea",
-
 		"std" => ""),
-
 
 array( "name" => "First Block Image",
-
-
 		"desc" => "Upload Your Home Page First Block Image ",
-
 		"id" => $shortname."_first_img",
-
 		"type" => "upload",
-
 		"std" => ""),
-
-
-
 array( "name" => "Second Block Title",
-
 		"desc" => "Enter Your Home Page Second Block Title ",
-
-
-
 		"id" => $shortname."_second_block",
-
-
-
 		"type" => "text",
-
 		"std" => ""),
-
 array( "name" => "Second Block Discription",
-
 		"desc" => "Enter Your Home Page Second Block Discription ",
 
 
