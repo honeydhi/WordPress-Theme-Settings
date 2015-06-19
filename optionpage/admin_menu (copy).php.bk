@@ -11,7 +11,7 @@
 /* Set your theme name & shortname to get options fields*/
 $themename = "My Theme Settings";
 $shortname = "wpc";
-include("wpc_functions.php");
+
 /* Fetch all Categories ,you can use it any where in your theme to get the desire pages or posts.
  * 
  * Author Davinder Singh
@@ -37,10 +37,14 @@ $wp_cats = array();
  * Author Davinder Singh
  * @ array (name , value)
  * */
+	$tempArray = array();
 	global $wpdb;
-	$GetSectionsArray = $wpdb->get_results( 'SELECT * FROM wp_optionspage_section' , ARRAY_N );
-	
-	//echo '<pre>'; print_r($Mainresults); die;
+	$Mainresults = $wpdb->get_results( 'SELECT * FROM wp_optionspage_section' , OBJECT );
+	foreach ($Mainresults as $mainresultarray) {
+				$tempArray[] = $mainresultarray;
+	}
+ 
+//echo '<pre>'; print_r($tempArray); die;
 $options = array (
 	array( "name" => $themename." Options",
 			"type" => "title"),
@@ -161,7 +165,7 @@ $options = array (
 
 	array( "type" => "close"),
 	);
-	//echo '<pre>'; print_r($options); die;
+	
 	/* Description : Update and delete the options fields here
 	 * 
 	 * Author : Davinder Singh
@@ -228,171 +232,14 @@ $options = array (
 		 * */
 
 	function mytheme_admin() {
-	global $themename, $shortname, $options ,$GetSectionsArray;
+	global $themename, $shortname, $options;
 	$i=0;
 	if ( $_REQUEST['saved'] ) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' settings saved.</strong></p></div>';
 	if ( $_REQUEST['reset'] ) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' settings reset.</strong></p></div>';
-		foreach ($Mainresults as $mainresultarray) {
-				
-	}
 	?>
-	
-	
 <div class="wrap am_wrap">
 	<h2><?php echo $themename; ?> Options Panel</h2>
 		<div class="am_opts">
-			
-<p>Please, use the menu below to setting up your theme.</p>			
-<div class="am_section">
-	<div class="am_title">
-		<h3><img src="http://localhost/wordpress/wp-content/plugins/optionpage/images/trans.png" class="inactive" alt="">Social Media Settings</h3>
-		<span class="submit"><input name="save2" type="submit" value="Save Changes" /></span>
-		<div class="clearfix"></div>
-	</div>
-	<div class="am_options">
-		<div class="am_input am_text">
-			<label for="wpc_goo">Google Plus LinK</label>
-			<input name="wpc_goo" id="wpc_goo" type="text" value="http://google.com" />
-			<small>Enter Your Google Plus Link here.</small>
-			<div class="clearfix"></div>
-		</div>
-		<div class="am_input am_text">
-			<label for="wpc_tlink">Twitter LinK</label>
-			<input name="wpc_tlink" id="wpc_tlink" type="text" value="" />
-			<small>Enter Your Twitter Link here.</small>
-			<div class="clearfix"></div>
-		</div>
-		<div class="am_input am_text">
-			<label for="wpc_you">Youtube LinK</label>
-			<input name="wpc_you" id="wpc_you" type="text" value="" />
-			<small>Enter Your Youtube Link here.</small>
-			<div class="clearfix"></div>
-		</div>
-		<div class="am_input am_text">
-			<label for="wpc_rss">Rss LinK</label>
-			<input name="wpc_rss" id="wpc_rss" type="text" value="" />
-			<small>Enter Your Rss Link here.</small>
-		<div class="clearfix"></div>
-		</div>
-	</div>
-</div>
-<br/>
-<?php
-	foreach($GetSectionsArray as $GetSections){ 
-	?>
-	<div class="am_section">
-		<div class="am_title">
-		<h3><img src="http://localhost/wordpress/wp-content/plugins/optionpage/images/trans.png" class="inactive" alt=""><?php  echo $GetSections[1]; ?></h3>
-		<span class="submit"><input name="save2" type="submit" value="Save Changes" /></span>
-		<div class="clearfix"></div>
-	</div>
-	<div class="am_options">
-	<?php  $FieldsArray = getFields($GetSections[0]);
-	//echo '<pre>';print_r($FieldsArray);
-	foreach ($FieldsArray as $Fields){
-		switch ( $Fields->type ) {
-		case "text":
-	?>
-	<div class="am_input am_text">
-		<label for="wpc_goo"><?php echo $Fields->name; ?></label>
-		<input name="wpc_goo" id="wpc_goo" type="<?php echo $Fields->type; ?>" value="" />
-		<small><?php echo $Fields->description; ?></small>
-		<div class="clearfix"></div>
-	</div>
-	<?php break; case 'text2': ?>
-			   <div class="am_input am_text">
-				<style type="text/css">
-					.icolor{position:absolute;}
-					.icolor_flat,.icolor_ft{position:relative;}
-					.icolor td{width: 15px;height: 15px;border: solid 1px #000000;	cursor:pointer;}
-					.icolor table{background-color: #FFFFFF;border: solid 1px #ccc;}
-					.icolor .icolor_tbx{width:170px;border-top:1px solid #999;border-left:1px solid #ccc;border-right:1px solid #ccc;border-bottom:1px solid #ccc;}
-					.icolor_ok img{border:none;}
-					.icolorC,h2{width:500px;margin:80px auto;}
-					#icolor4 .icolor_tbx{width:154px;padding-right:16px;}
-					#icolor4 .icolor_ok{position:absolute;left:154px;top:50%;margin-top:-8px;}
-				</style>
-		<script type="text/javascript" src="<?php bloginfo('template_url');?>/optionpage/js/jquery.icolor.js"></script> 
-		<label for="<?php echo $Fields->optionKey; ?>"><?php echo $Fields->name; ?></label>
-		<input name="<?php echo $Fields->optionKey; ?>" id="<?php echo $Fields->optionKey; ?>" type="text" value="<?php if ( get_option( $value['id'] ) != "") { echo stripslashes(get_option( $value['id'])  ); } else { echo $value['std']; } ?>"/>
-		<script type="text/javascript">
-			//<![CDATA[
-			var $ = jQuery.noConflict();
-			$("#<?php echo $Fields->optionKey; ?>").icolor({
-				onSelect:function(c){this.$tb.css("background-color",c);this.$t.val(c);}
-			});	
-			//]]>
-		</script>
-		</div>
-	<div class="am_input am_textarea">
-	<label for="<?php echo $Fields->optionKey; ?>"><?php echo $Fields->name; ?></label>
-	<div class="texted"><textarea id="<?php echo $Fields->optionKey; ?>" name="<?php echo $Fields->optionKey; ?>" type="<?php echo $value['type']; ?>" cols="" rows=""><?php if ( get_option( $Fields->optionKey; ) != "") { echo stripslashes(get_option( $Fields->optionKey;) ); } else { echo $value['std']; } ?></textarea>
-	<div class="clear" style="margin:0;padding:0; clear:both;"></div>
-	</div>
-	<small><?php echo $Fields->description; ?></small><div class="clearfix"></div>
-	<script>
-		//<![CDATA[
-		bkLib.onDomLoaded(function() { new nicEditor().panelInstance('<?php echo $Fields->optionKey; ?>'); });
-		//]]>
-	</script>
-	</div>
-	<?php break; case 'textarea':?>
-	<div class="am_input am_textarea">
-	<label for="<?php echo $Fields->optionKey; ?>"><?php echo $Fields->name; ?></label>
-	<div class="texted"><textarea id="<?php echo $Fields->optionKey; ?>" name="<?php echo $Fields->optionKey; ?>" type="<?php echo $value['type']; ?>" cols="" rows=""><?php if ( get_option( $Fields->optionKey; ) != "") { echo stripslashes(get_option( $Fields->optionKey;) ); } else { echo $value['std']; } ?></textarea>
-	<div class="clear" style="margin:0;padding:0; clear:both;"></div>
-	</div>
-	<small><?php echo $Fields->description; ?></small><div class="clearfix"></div>
-	<script>
-		//<![CDATA[
-		bkLib.onDomLoaded(function() { new nicEditor().panelInstance('<?php echo $Fields->optionKey; ?>'); });
-		//]]>
-	</script>
-	</div>
-	<?php break; case 'textarea2': ?>
-	<div class="am_input am_textarea">
-			<label for="<?php echo $Fields->optionKey; ?>"><?php echo $Fields->name; ?></label>
-			<div class="texted"><textarea  name="<?php echo $Fields->optionKey; ?>" type="<?php echo $value['type']; ?>" cols="" rows=""><?php if ( get_option( $Fields->optionKey; ) != "") { echo stripslashes(get_option( $Fields->optionKey;) ); } else { echo $value['std']; } ?></textarea>
-			<div class="clear" style="margin:0;padding:0; clear:both;"></div>
-		</div>
-		<small><?php echo $Fields->description; ?></small><div class="clearfix"></div>
-	</div> 
-	<?php break; case 'select':?>
-	<div class="am_input am_select">
-		<label for="<?php echo $Fields->optionKey; ?>"><?php echo $Fields->name; ?></label>
-			<select name="<?php echo $Fields->optionKey; ?>" id="<?php echo $Fields->optionKey; ?>">
-			<?php foreach ($value['options'] as $key=>$option) { ?>
-			<option <?php if (get_option( $Fields->optionKey; ) == $key) { echo 'selected="selected"'; } ?> value="<?php echo $key; ?>"><?php echo $option; ?></option><?php } ?>
-			</select>
-		<small><?php echo $Fields->description; ?></small><div class="clearfix"></div>
-	</div>
-	<?php break; case 'upload': ?>
-	<div class="rm_input rm_upload">
-		<p class="awdMetaImage" style="padding-left:15px; max-width:720px;"><img  src="<?php if ( get_option( $Fields->optionKey; ) != "") { echo stripslashes(get_option( $Fields->optionKey;) ); } else { echo $value['std']; } ?>"  /> <p>
-		<label style="padding-left:15px;" for="<?php echo $Fields->optionKey; ?>"><?php echo $Fields->name; ?></label>
-		<input type="text" class="upload-url <?php $field_class ?>" name="<?php echo $Fields->optionKey; ?>" id="<?php echo $value['name']; ?>" value="<?php if ( get_option( $Fields->optionKey; ) != "") { echo stripslashes(get_option( $Fields->optionKey;) ); } else { echo $value['std']; } ?>" />
-		<input id="st_upload_button" class="st_upload_button" type="button" name="upload_button" value="Upload"  />
-	</div>
-	<?php break; case "checkbox":?>
-	<div class="am_input am_checkbox">
-		<label for="<?php echo $Fields->optionKey; ?>"><?php echo $value['name']; ?></label>
-		<?php if(get_option($Fields->optionKey;)){ $checked = "checked=\"checked\""; }else{ $checked = "";} ?>
-		<input type="checkbox" name="<?php echo $Fields->optionKey; ?>" id="<?php echo $Fields->optionKey; ?>" value="true" <?php echo $checked; ?> />
-		<small><?php echo $Fields->description; ?></small><div class="clearfix"></div>
-	</div>
-	
-	<?php break; default: ?>
-	<?php }
-	} ?></div>
-	</div>
-<br/>
-	<?php }
-
-	?>
-	
-	
-	
-	<!--
 			<form method="post">
 				<?php foreach ($options as $value) {
 					switch ( $value['type'] ) {
@@ -407,7 +254,7 @@ $options = array (
 				<?php break; case 'text':?>
 				<div class="am_input am_text">
 					<label for="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></label>
-					<input name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>" type="<?php echo $value['type']; ?>" value="<?php if ( get_option( $value['id'] ) != "") { echo stripslashes(get_option( $value['id'])  ); } else { echo $value['std']; } ?>" />
+					<input name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>" type="<?php echo $value['type']; ?>" value="<?php if ( get_settings( $value['id'] ) != "") { echo stripslashes(get_settings( $value['id'])  ); } else { echo $value['std']; } ?>" />
 					<small><?php echo $value['desc']; ?></small><div class="clearfix"></div>
 				</div>
 			 <?php break; case 'text2': ?>
@@ -425,7 +272,7 @@ $options = array (
 				</style>
 		<script type="text/javascript" src="<?php bloginfo('template_url');?>/optionpage/js/jquery.icolor.js"></script> 
 		<label for="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></label>
-		<input name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>" type="text" value="<?php if ( get_option( $value['id'] ) != "") { echo stripslashes(get_option( $value['id'])  ); } else { echo $value['std']; } ?>"/>
+		<input name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>" type="text" value="<?php if ( get_settings( $value['id'] ) != "") { echo stripslashes(get_settings( $value['id'])  ); } else { echo $value['std']; } ?>"/>
 		<script type="text/javascript">
 			//<![CDATA[
 			var $ = jQuery.noConflict();
@@ -438,7 +285,7 @@ $options = array (
 	<?php break; case 'textarea':?>
 	<div class="am_input am_textarea">
 	<label for="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></label>
-	<div class="texted"><textarea id="<?php echo $value['id']; ?>" name="<?php echo $value['id']; ?>" type="<?php echo $value['type']; ?>" cols="" rows=""><?php if ( get_option( $value['id'] ) != "") { echo stripslashes(get_option( $value['id']) ); } else { echo $value['std']; } ?></textarea>
+	<div class="texted"><textarea id="<?php echo $value['id']; ?>" name="<?php echo $value['id']; ?>" type="<?php echo $value['type']; ?>" cols="" rows=""><?php if ( get_settings( $value['id'] ) != "") { echo stripslashes(get_settings( $value['id']) ); } else { echo $value['std']; } ?></textarea>
 	<div class="clear" style="margin:0;padding:0; clear:both;"></div>
 	</div>
 	<small><?php echo $value['desc']; ?></small><div class="clearfix"></div>
@@ -451,7 +298,7 @@ $options = array (
 	<?php break; case 'textarea2': ?>
 	<div class="am_input am_textarea">
 			<label for="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></label>
-			<div class="texted"><textarea  name="<?php echo $value['id']; ?>" type="<?php echo $value['type']; ?>" cols="" rows=""><?php if ( get_option( $value['id'] ) != "") { echo stripslashes(get_option( $value['id']) ); } else { echo $value['std']; } ?></textarea>
+			<div class="texted"><textarea  name="<?php echo $value['id']; ?>" type="<?php echo $value['type']; ?>" cols="" rows=""><?php if ( get_settings( $value['id'] ) != "") { echo stripslashes(get_settings( $value['id']) ); } else { echo $value['std']; } ?></textarea>
 			<div class="clear" style="margin:0;padding:0; clear:both;"></div>
 		</div>
 		<small><?php echo $value['desc']; ?></small><div class="clearfix"></div>
@@ -461,16 +308,16 @@ $options = array (
 		<label for="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></label>
 			<select name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>">
 			<?php foreach ($value['options'] as $key=>$option) { ?>
-			<option <?php if (get_option( $value['id'] ) == $key) { echo 'selected="selected"'; } ?> value="<?php echo $key; ?>"><?php echo $option; ?></option><?php } ?>
+			<option <?php if (get_settings( $value['id'] ) == $key) { echo 'selected="selected"'; } ?> value="<?php echo $key; ?>"><?php echo $option; ?></option><?php } ?>
 			</select>
 		<small><?php echo $value['desc']; ?></small><div class="clearfix"></div>
 	</div>
 	<?php break; case 'upload': ?>
 	<div class="rm_input rm_upload">
 		<?php default: ?>
-		<p class="awdMetaImage" style="padding-left:15px; max-width:720px;"><img  src="<?php if ( get_option( $value['id'] ) != "") { echo stripslashes(get_option( $value['id']) ); } else { echo $value['std']; } ?>"  /> <p>
+		<p class="awdMetaImage" style="padding-left:15px; max-width:720px;"><img  src="<?php if ( get_settings( $value['id'] ) != "") { echo stripslashes(get_settings( $value['id']) ); } else { echo $value['std']; } ?>"  /> <p>
 		<label style="padding-left:15px;" for="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></label>
-		<input type="text" class="upload-url <?php $field_class ?>" name="<?php echo $value['id']; ?>" id="<?php echo $value['name']; ?>" value="<?php if ( get_option( $value['id'] ) != "") { echo stripslashes(get_option( $value['id']) ); } else { echo $value['std']; } ?>" />
+		<input type="text" class="upload-url <?php $field_class ?>" name="<?php echo $value['id']; ?>" id="<?php echo $value['name']; ?>" value="<?php if ( get_settings( $value['id'] ) != "") { echo stripslashes(get_settings( $value['id']) ); } else { echo $value['std']; } ?>" />
 		<input id="st_upload_button" class="st_upload_button" type="button" name="upload_button" value="Upload"  />
 	</div>
 	<?php break; case "checkbox":?>
@@ -495,7 +342,7 @@ $options = array (
 			<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
 			<input type="hidden" name="action" value="save" />
 		</p>
-	</form>-->
+	</form>
 	</div> 
 
 <?php
