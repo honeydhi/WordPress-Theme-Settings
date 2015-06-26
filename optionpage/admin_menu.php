@@ -40,11 +40,10 @@ $wp_cats = array();
 	global $wpdb;
 	$GetSectionsArray = $wpdb->get_results( 'SELECT * FROM wp_optionspage_section' , ARRAY_N );
 	
-	//echo '<pre>'; print_r($Mainresults); die;
+	/*echo '<pre>'; print_r($Mainresults); die;
 $options = array (
 	array( "name" => $themename." Options",
 			"type" => "title"),
-	/* First Section*/
 	array( "name" => "Header Settings",
 			"type" => "section"),
 	array( "type" => "open"),
@@ -60,7 +59,7 @@ $options = array (
 	"std" => ""), 
 	array( "type" => "close"),
 
-	/* End first Section */
+
 	
 	array( "name" => "Social Media Settings",
 			"type" => "section"),
@@ -161,7 +160,7 @@ $options = array (
 
 	array( "type" => "close"),
 	);
-	//echo '<pre>'; print_r($options); die;
+	//echo '<pre>'; print_r($options); die; */
 	/* Description : Update and delete the options fields here
 	 * 
 	 * Author : Davinder Singh
@@ -199,7 +198,9 @@ $options = array (
 	}
 	
 	function my_custom_submenu_page_callback(){
-		echo "honey";
+		$Add_fields_file = plugin_dir_path( __FILE__ ) . "wpc_add_fields.php";
+		if ( file_exists( $Add_fields_file ) )
+			require $Add_fields_file;
 	}
 
 	/* Description : Include all the Jquery and css files here
@@ -209,19 +210,18 @@ $options = array (
 	 * */
 	function mytheme_add_init() {
 		$plugin_URL = plugin_dir_url( __FILE__ );
-		wp_enqueue_style("functions", $plugin_URL."/functions.css", false, "1.0", "all");
-		wp_enqueue_style("functions-styles", $plugin_URL."/admin-style.css", false, "1.0", "all");
-		wp_enqueue_script("am_script", $plugin_URL."/am_script.js", false, "1.0");
-		wp_enqueue_script("upload_box", $plugin_URL."/upload_box.js", false, "1.0");
+		wp_enqueue_style("functions", $plugin_URL."functions.css", false, "1.0", "all");
+		wp_enqueue_style("functions-styles", $plugin_URL."admin-style.css", false, "1.0", "all");
+		wp_enqueue_script("am_script", $plugin_URL."am_script.js", false, "1.0");
+		wp_enqueue_script("upload_box", $plugin_URL."upload_box.js", false, "1.0");
 		wp_enqueue_script('media-upload');
 		wp_enqueue_script('thickbox');
 		//wp_register_script('my-upload', get_bloginfo( 'stylesheet_directory' ) . '/js/uploader.js', array('jquery','media-upload','thickbox'));
 		wp_enqueue_script('my-upload');
 		wp_enqueue_style('thickbox');
 	}
-
-
-		/* Description : Display the setting page in admin
+	
+	/* Description : Display the setting page in admin
 		 * 
 		 * Author : Davinder Singh
 		 * params : none;
@@ -245,7 +245,7 @@ $options = array (
 <p>Please, use the menu below to setting up your theme.</p>			
 <div class="am_section">
 	<div class="am_title">
-		<h3><img src="http://localhost/wordpress/wp-content/plugins/optionpage/images/trans.png" class="inactive" alt="">Social Media Settings</h3>
+		<h3><img src="<?php echo  plugin_dir_url( __FILE__ ); ?>/images/trans.png" class="inactive" alt="">Social Media Settings</h3>
 		<span class="submit"><input name="save2" type="submit" value="Save Changes" /></span>
 		<div class="clearfix"></div>
 	</div>
@@ -282,7 +282,7 @@ $options = array (
 	?>
 	<div class="am_section">
 		<div class="am_title">
-		<h3><img src="http://localhost/wordpress/wp-content/plugins/optionpage/images/trans.png" class="inactive" alt=""><?php  echo $GetSections[1]; ?></h3>
+		<h3><img src="<?php echo  plugin_dir_url( __FILE__ ); ?>/images/trans.png" class="inactive" alt=""><?php  echo $GetSections[1]; ?></h3>
 		<span class="submit"><input name="save2" type="submit" value="Save Changes" /></span>
 		<div class="clearfix"></div>
 	</div>
@@ -326,7 +326,7 @@ $options = array (
 		</div>
 	<div class="am_input am_textarea">
 	<label for="<?php echo $Fields->optionKey; ?>"><?php echo $Fields->name; ?></label>
-	<div class="texted"><textarea id="<?php echo $Fields->optionKey; ?>" name="<?php echo $Fields->optionKey; ?>" type="<?php echo $value['type']; ?>" cols="" rows=""><?php if ( get_option( $Fields->optionKey; ) != "") { echo stripslashes(get_option( $Fields->optionKey;) ); } else { echo $value['std']; } ?></textarea>
+	<div class="texted"><textarea id="<?php echo $Fields->optionKey; ?>" name="<?php echo $Fields->optionKey; ?>" type="<?php echo $value['type']; ?>" cols="" rows=""><?php if ( get_option( $Fields->optionKey ) != "") { echo stripslashes(get_option( $Fields->optionKey) ); } else { echo $value['std']; } ?></textarea>
 	<div class="clear" style="margin:0;padding:0; clear:both;"></div>
 	</div>
 	<small><?php echo $Fields->description; ?></small><div class="clearfix"></div>
@@ -339,7 +339,7 @@ $options = array (
 	<?php break; case 'textarea':?>
 	<div class="am_input am_textarea">
 	<label for="<?php echo $Fields->optionKey; ?>"><?php echo $Fields->name; ?></label>
-	<div class="texted"><textarea id="<?php echo $Fields->optionKey; ?>" name="<?php echo $Fields->optionKey; ?>" type="<?php echo $value['type']; ?>" cols="" rows=""><?php if ( get_option( $Fields->optionKey; ) != "") { echo stripslashes(get_option( $Fields->optionKey;) ); } else { echo $value['std']; } ?></textarea>
+	<div class="texted"><textarea id="<?php echo $Fields->optionKey; ?>" name="<?php echo $Fields->optionKey; ?>" type="<?php echo $value['type']; ?>" cols="" rows=""><?php if ( get_option( $Fields->optionKey ) != "") { echo stripslashes(get_option( $Fields->optionKey) ); } else { echo $value['std']; } ?></textarea>
 	<div class="clear" style="margin:0;padding:0; clear:both;"></div>
 	</div>
 	<small><?php echo $Fields->description; ?></small><div class="clearfix"></div>
@@ -352,7 +352,7 @@ $options = array (
 	<?php break; case 'textarea2': ?>
 	<div class="am_input am_textarea">
 			<label for="<?php echo $Fields->optionKey; ?>"><?php echo $Fields->name; ?></label>
-			<div class="texted"><textarea  name="<?php echo $Fields->optionKey; ?>" type="<?php echo $value['type']; ?>" cols="" rows=""><?php if ( get_option( $Fields->optionKey; ) != "") { echo stripslashes(get_option( $Fields->optionKey;) ); } else { echo $value['std']; } ?></textarea>
+			<div class="texted"><textarea  name="<?php echo $Fields->optionKey; ?>" type="<?php echo $value['type']; ?>" cols="" rows=""><?php if ( get_option( $Fields->optionKey ) != "") { echo stripslashes(get_option( $Fields->optionKey) ); } else { echo $value['std']; } ?></textarea>
 			<div class="clear" style="margin:0;padding:0; clear:both;"></div>
 		</div>
 		<small><?php echo $Fields->description; ?></small><div class="clearfix"></div>
@@ -362,21 +362,21 @@ $options = array (
 		<label for="<?php echo $Fields->optionKey; ?>"><?php echo $Fields->name; ?></label>
 			<select name="<?php echo $Fields->optionKey; ?>" id="<?php echo $Fields->optionKey; ?>">
 			<?php foreach ($value['options'] as $key=>$option) { ?>
-			<option <?php if (get_option( $Fields->optionKey; ) == $key) { echo 'selected="selected"'; } ?> value="<?php echo $key; ?>"><?php echo $option; ?></option><?php } ?>
+			<option <?php if (get_option( $Fields->optionKey ) == $key) { echo 'selected="selected"'; } ?> value="<?php echo $key; ?>"><?php echo $option; ?></option><?php } ?>
 			</select>
 		<small><?php echo $Fields->description; ?></small><div class="clearfix"></div>
 	</div>
 	<?php break; case 'upload': ?>
 	<div class="rm_input rm_upload">
-		<p class="awdMetaImage" style="padding-left:15px; max-width:720px;"><img  src="<?php if ( get_option( $Fields->optionKey; ) != "") { echo stripslashes(get_option( $Fields->optionKey;) ); } else { echo $value['std']; } ?>"  /> <p>
+		<p class="awdMetaImage" style="padding-left:15px; max-width:720px;"><img  src="<?php if ( get_option( $Fields->optionKey ) != "") { echo stripslashes(get_option( $Fields->optionKey) ); } else { echo $value['std']; } ?>"  /> <p>
 		<label style="padding-left:15px;" for="<?php echo $Fields->optionKey; ?>"><?php echo $Fields->name; ?></label>
-		<input type="text" class="upload-url <?php $field_class ?>" name="<?php echo $Fields->optionKey; ?>" id="<?php echo $value['name']; ?>" value="<?php if ( get_option( $Fields->optionKey; ) != "") { echo stripslashes(get_option( $Fields->optionKey;) ); } else { echo $value['std']; } ?>" />
+		<input type="text" class="upload-url <?php echo $field_class; ?>" name="<?php echo $Fields->optionKey; ?>" id="<?php echo $value['name']; ?>" value="<?php if ( get_option( $Fields->optionKey ) != "") { echo stripslashes(get_option( $Fields->optionKey ) ); } else { echo $value['std']; } ?>" />
 		<input id="st_upload_button" class="st_upload_button" type="button" name="upload_button" value="Upload"  />
 	</div>
 	<?php break; case "checkbox":?>
 	<div class="am_input am_checkbox">
 		<label for="<?php echo $Fields->optionKey; ?>"><?php echo $value['name']; ?></label>
-		<?php if(get_option($Fields->optionKey;)){ $checked = "checked=\"checked\""; }else{ $checked = "";} ?>
+		<?php if(get_option($Fields->optionKey)){ $checked = "checked=\"checked\""; }else{ $checked = "";} ?>
 		<input type="checkbox" name="<?php echo $Fields->optionKey; ?>" id="<?php echo $Fields->optionKey; ?>" value="true" <?php echo $checked; ?> />
 		<small><?php echo $Fields->description; ?></small><div class="clearfix"></div>
 	</div>
