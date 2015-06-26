@@ -212,8 +212,8 @@ $options = array (
 		$plugin_URL = plugin_dir_url( __FILE__ );
 		wp_enqueue_style("functions", $plugin_URL."functions.css", false, "1.0", "all");
 		wp_enqueue_style("functions-styles", $plugin_URL."admin-style.css", false, "1.0", "all");
-		wp_enqueue_script("am_script", $plugin_URL."am_script.js", false, "1.0");
-		wp_enqueue_script("upload_box", $plugin_URL."upload_box.js", false, "1.0");
+		wp_enqueue_script("am_script", $plugin_URL."js/am_script.js", false, "1.0");
+		wp_enqueue_script("upload_box", $plugin_URL."js/upload_box.js", false, "1.0");
 		wp_enqueue_script('media-upload');
 		wp_enqueue_script('thickbox');
 		//wp_register_script('my-upload', get_bloginfo( 'stylesheet_directory' ) . '/js/uploader.js', array('jquery','media-upload','thickbox'));
