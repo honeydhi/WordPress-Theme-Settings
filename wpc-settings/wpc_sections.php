@@ -60,12 +60,14 @@ if((!empty($_POST) && $_POST['wpc_save_section']=='Save Changes')){
 </div>
 <div class="wrap am_wrap" style="float:left; width:30%">
 <div class="am_section" >
-			<table border="1" style="width:100%">
+<table border="1" style="width:100%" id="sectionTable" class="tablesorter">
+<thead>
  <tr>
     <th>Section Name</th>
     <th colspan=2 >Action</th>
   </tr>
-  
+  </thead>
+  <tbody>
   <?php 
 	$getSectionArray = $wpcInstance->getSections(); 
 	foreach ($getSectionArray as $value){
@@ -77,6 +79,7 @@ if((!empty($_POST) && $_POST['wpc_save_section']=='Save Changes')){
 		<td><a href="<?php echo wp_nonce_url(admin_url('admin.php?page=section-management&edit='.$value->id.''), 'edit_something', 'editsection');?>">Edit</a></td>
 	</tr>
 	<?php } }?>
+	<tbody>
     </table>
 </div>
 </div>

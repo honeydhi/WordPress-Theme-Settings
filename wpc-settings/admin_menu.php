@@ -1,8 +1,8 @@
 <?php
 /*
-    Plugin Name: Basic settings 
+    Plugin Name: WordPress Custom settings 
     Plugin URI: https://about.me/honeydavinder
-    Description: Plugin for setting up the logo and basic information like social media settings and footer content, this pluign helps the developer to add new meta fields and options fields.
+    Description: Plugin for setting up the basic information like social media settings and footer content, this pluign helps the developer to save some of miscellaneous items easily there is no need to make any specific widgets and post type just save all the values in options .
     Author: Davinder Singh
     Version: 1.0
     Author URI: https://about.me/honeydavinder
@@ -13,6 +13,7 @@ $themename = "WordPress Custom Settings";
 $shortname = "wpc";
 include( plugin_dir_path( __FILE__ ) . 'inc/wpc_class.php');
 $wpcInstance = new wpc;
+
 /* Fetch all Categories ,you can use it any where in your theme to get the desire pages or posts.
  * 
  * Author Davinder Singh
@@ -59,22 +60,33 @@ $wp_cats = array();
 				die;
 			}
 	}
-		add_menu_page($themename, $themename, 'administrator', basename(__FILE__), 'mytheme_admin');
-	}
-
-	function register_my_custom_submenu_page() {
-		add_submenu_page(get_admin_page_parent(), 'Section Management', 'Section Management', 'manage_options', 'section-management', 'get_add_section_page_admin' );
-		add_submenu_page(get_admin_page_parent(), 'Add New Fields', 'Add New Fields', 'manage_options', 'add-new-field', 'get_add_field_page_admin' );
+		add_menu_page($themename, $themename, 'administrator', 'wpc-management', 'mytheme_admin');
 	}
 	
+	/* Add Section Management and Fields Management pages here
+	* Author Davinder Singh
+	*/
+	function register_my_custom_submenu_page() {
+		add_submenu_page(get_admin_page_parent(), 'Section Management', 'Section Management', 'manage_options', 'section-management', 'get_add_section_page_admin' );
+		add_submenu_page(get_admin_page_parent(), 'Fields Management', 'Fields Management', 'manage_options', 'field-management', 'get_add_field_page_admin' );
+	}
+	
+	/* Include Fields Management File
+	* Davinder Singh
+	**/
+	
 	function get_add_field_page_admin(){
-		$Add_fields_file = plugin_dir_path( __FILE__ ) . "wpc_add_fields.php";
+		$Add_fields_file = plugin_dir_path( __FILE__ ) . "wpc_fields.php";
 		if ( file_exists( $Add_fields_file ) )
 			require $Add_fields_file;
 	}
 	
+	/* Include Section Management File
+	* Davinder Singh
+	**/
+	
 	function get_add_section_page_admin(){
-		$Add_section_file = plugin_dir_path( __FILE__ ) . "wpc_add_sections.php";
+		$Add_section_file = plugin_dir_path( __FILE__ ) . "wpc_sections.php";
 		if ( file_exists( $Add_section_file ) )
 			require $Add_section_file;
 	}
@@ -88,9 +100,11 @@ $wp_cats = array();
 		$plugin_URL = plugin_dir_url( __FILE__ );
 		wp_enqueue_style("functions", $plugin_URL."css/functions.css", false, "1.0", "all");
 		wp_enqueue_style("functions-styles", $plugin_URL."css/admin-style.css", false, "1.0", "all");
+		wp_enqueue_style("table-styles", $plugin_URL."themes/blue/style.css", false, "1.0", "all");
 		wp_enqueue_script("am_script", $plugin_URL."js/am_script.js", false, "1.0");
 		wp_enqueue_script("upload_box", $plugin_URL."js/upload_box.js", false, "1.0");
 		wp_enqueue_script('jquery-validation', $plugin_URL."js/jquery.validate.min.js", false, "1.0");
+		wp_enqueue_script('jquery-wpc-tablesorter', $plugin_URL."js/jquery.tablesorter.min.js", false, "1.0");
 		wp_enqueue_script('jquery-wpc-functions', $plugin_URL."js/wpc_functions.js", false, "1.0");
 		wp_enqueue_script('media-upload');
 		wp_enqueue_script('thickbox');
@@ -133,7 +147,7 @@ $wp_cats = array();
 	
 	<div class="am_options">
 	<?php  
-	$FieldsArray = $wpcInstance->getFields($GetSections->id);
+	$FieldsArray = $wpcInstance->getFields($GetSections->id ); 
 	foreach ($FieldsArray as $Fields){
 		switch ( $Fields->wpc_type ) {
 		case "text":

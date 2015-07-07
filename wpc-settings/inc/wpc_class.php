@@ -13,16 +13,34 @@ class wpc{
 	 * @ array (name , value)
 	 * */ 
 	 
-	public function getSections(){
+	public function getSections($fields = array(), $arrayType = OBJECT){
 		global $wpdb;
-		$GetSectionArray = $wpdb->get_results( 'SELECT * FROM '.$wpdb->prefix.'optionspage_section' , OBJECT );
+		if (!empty($fields)) :
+		$fields = implode(",",$fields); else:
+		$fields = '*';
+		endif;
+		$GetSectionArray = $wpdb->get_results( 'SELECT '.$fields.' FROM '.$wpdb->prefix.'optionspage_section' , $arrayType );
 		return $GetSectionArray;
 	}
 	
 		
-	public function getFields($sectionID){
+	public function getFields($sectionID , $fields = array() , $arrayType = OBJECT){
 		global $wpdb;
-		$GetfieldsArray = $wpdb->get_results( 'SELECT * FROM '.$wpdb->prefix.'optionspage_fields where wpc_sectionID = '.$sectionID , OBJECT );
+		if (!empty($fields)) :
+		$fields = implode(",",$fields); else:
+		$fields = '*';
+		endif;
+		$GetfieldsArray = $wpdb->get_results( 'SELECT '.$fields.' FROM '.$wpdb->prefix.'optionspage_fields where wpc_sectionID = '.$sectionID , $arrayType );
+		return $GetfieldsArray;
+	} 
+	
+	public function getAllFields($fields = array() , $arrayType = OBJECT){
+		global $wpdb;
+		if (!empty($fields)) :
+		$fields = implode(",",$fields); else:
+		$fields = '*';
+		endif;
+		$GetfieldsArray = $wpdb->get_results( 'SELECT '.$fields.' FROM '.$wpdb->prefix.'optionspage_fields ', $arrayType );
 		return $GetfieldsArray;
 	} 
 	
@@ -30,6 +48,13 @@ class wpc{
 		global $wpdb;
 		$sectionid = (int) ($SectionID);
 		$GetSpecificsectionArray = $wpdb->get_row( 'SELECT * FROM '.$wpdb->prefix.'optionspage_section where id='.$sectionid , OBJECT );
+		return $GetSpecificsectionArray;
+	}
+	
+	public function getFieldByID($FieldID){
+		global $wpdb;
+		$FieldID = (int) ($FieldID);
+		$GetSpecificsectionArray = $wpdb->get_row( 'SELECT * FROM '.$wpdb->prefix.'optionspage_fields where id='.$FieldID , OBJECT );
 		return $GetSpecificsectionArray;
 	}
 	public function saveUpdateSection($dataArray = array()){
@@ -56,7 +81,22 @@ class wpc{
 	
 	public function deleteSection($sectionID){
 		global $wpdb;
-		$response = $wpdb->delete( $wpdb->prefix.'optionspage_section', array( 'id' => $sectionID ) );
+		$get = $this->getFields($sectionID, array('id') , OBJECT);
+		foreach ($get as $valueArray){
+			foreach ($valueArray as $value){
+				$table = $wpdb->prefix.'optionspage_fields';
+				$data_array = array('wpc_sectionID' => 1);
+				$where = array('id' => $value);
+				$wpdb->update( $table, $data_array, $where );
+			}
+		}
+        $response = $wpdb->delete( $wpdb->prefix.'optionspage_section', array( 'id' => $sectionID ) );
+		return $response;
+	}
+	
+	public function deleteField($fieldID){
+		global $wpdb;
+        $response = $wpdb->delete( $wpdb->prefix.'optionspage_fields', array( 'id' => $fieldID ) );
 		return $response;
 	}
 	
@@ -64,8 +104,7 @@ class wpc{
 		global $wpdb;
 		 $response = $wpdb->get_row( 'SELECT count(*) as slugcount FROM '.$wpdb->prefix.'optionspage_fields where `wpc_optionKey`="'.$slug.'"' , OBJECT ); 
 		 if($response->slugcount > 0){
-			$count = $response->slugcount+1;
-			$slug = $slug.$count;
+			$slug = '';
 		 } else {
 			$slug = $slug;
 		 }
@@ -75,6 +114,8 @@ class wpc{
 		public function insertField($dataArray = array()){
 		global $wpdb;
 		$dataManupliateArray = array();
+		
+
 		if ( ! isset( $_POST['save_field'] ) || ! wp_verify_nonce( $_POST['save_field'], 'save_field' ) 
 		) {
 			print 'Sorry, your nonce did not verify.';
