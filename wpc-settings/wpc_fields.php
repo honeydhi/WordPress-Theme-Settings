@@ -38,13 +38,14 @@ if((!empty($_POST) && $_POST['wpc_save_field']=='Save Changes')){
 		$title = 'Edit';
 		$FieldId = $getFieldByID->id;
 		$disabled='disabled';
-		$addNewLink = '<a href="'. wp_nonce_url(admin_url('admin.php?page=section-management'), 'edit_something', 'addnew').'">Add New</a>';
+		$addNewLink = '<a href="'. wp_nonce_url(admin_url('admin.php?page=field-management'), 'add_something', 'addnew').'">Add New Field</a>';
 		$fromhiddenaction = 'update';
 	} else {
       
     }
 ?>
 <div class="wrap am_wrap" style="float:left; width:50%;">
+<?php echo $addNewLink; ?>
 	<h2><?php echo $title; ?> Field</h2>
 		<div class="am_opts">
 	<p>Please, fill the following fields.</p>
@@ -124,7 +125,6 @@ if((!empty($_POST) && $_POST['wpc_save_field']=='Save Changes')){
   <?php 
 	$getSectionArray = $wpcInstance->getAllFields(); 
 	foreach ($getSectionArray as $value){
-	if($value->id != 1){
 	?>
 	<tr>
 		<td><?php echo $value->wpc_name; ?></td>
@@ -132,7 +132,7 @@ if((!empty($_POST) && $_POST['wpc_save_field']=='Save Changes')){
 		<td><a href="<?php echo wp_nonce_url(admin_url('admin.php?page=field-management&del='.$value->id.''), 'doing_something', 'deleteField');?>">Delete</a></td>		
 		<td><a href="<?php echo wp_nonce_url(admin_url('admin.php?page=field-management&edit='.$value->id.''), 'edit_something', 'editField');?>">Edit</a></td>
 	</tr>
-	<?php } }?>
+	<?php  }?>
 	</tbody>
     </table>
 </div>

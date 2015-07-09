@@ -12,7 +12,68 @@
 $themename = "WordPress Custom Settings";
 $shortname = "wpc";
 include( plugin_dir_path( __FILE__ ) . 'inc/wpc_class.php');
+include( plugin_dir_path( __FILE__ ) . 'inc/shortcodes.php');
+require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 $wpcInstance = new wpc;
+
+global $wpc_db_version;
+$jal_db_version = '1.0';
+
+function wpc_install() {
+	global $wpdb;
+	global $wpc_db_version;
+
+	$table_name_first = $wpdb->prefix . 'optionspage_section';
+	$table_name_second = $wpdb->prefix . 'optionspage_fields';
+	$charset_collate = $wpdb->get_charset_collate();
+
+	$sqlForSection = "CREATE TABLE IF NOT EXISTS $table_name_first (
+		`id` int(11) NOT NULL AUTO_INCREMENT,
+		  `wpc_Title` varchar(255) NOT NULL,
+		  `wpc_Modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		  PRIMARY KEY (`id`)
+	) $charset_collate;";
+	
+	
+	$sqlForFields = "CREATE TABLE IF NOT EXISTS $table_name_second (
+		`id` int(11) NOT NULL AUTO_INCREMENT,
+		`wpc_sectionID` int(11) NOT NULL,
+		`wpc_name` varchar(255) NOT NULL,
+		`wpc_description` varchar(255) NOT NULL,
+		`wpc_optionKey` varchar(255) NOT NULL,
+		`wpc_type` varchar(255) NOT NULL,
+		`modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		PRIMARY KEY (`id`)
+	) $charset_collate;";
+$fg ="INSERT INTO $table_name_first (wpc_Title)
+	SELECT * FROM (SELECT 'Default Section') AS tmp
+	WHERE NOT EXISTS (
+		SELECT wpc_Title FROM $table_name_first WHERE wpc_Title = 'Default Section'
+	) LIMIT 1";
+
+	
+	dbDelta( $sqlForSection );
+	dbDelta( $sqlForFields );
+
+	add_option( 'wpc_db_version', $wpc_db_version );
+}
+
+function wpc_install_data() {
+	global $wpdb;
+	
+	$table_name_first = $wpdb->prefix . 'optionspage_section';
+	$charset_collate = $wpdb->get_charset_collate();
+	$fg ="INSERT INTO $table_name_first (wpc_Title)
+	SELECT * FROM (SELECT 'Default Section') AS tmp
+	WHERE NOT EXISTS (
+		SELECT wpc_Title FROM $table_name_first WHERE wpc_Title = 'Default Section'
+	) LIMIT 1";
+	dbDelta( $fg );
+}
+
+register_activation_hook( __FILE__, 'wpc_install' );
+register_activation_hook( __FILE__, 'wpc_install_data' );
+
 
 /* Fetch all Categories ,you can use it any where in your theme to get the desire pages or posts.
  * 
@@ -43,20 +104,20 @@ $wp_cats = array();
 	 
 	function mytheme_add_admin() {
 	global $themename, $shortname ,$wpcInstance;
-	if ( $_GET['page'] == basename(__FILE__) ) {
+	if ( $_GET['page'] =='wpc-management' ) {
 			if ( 'save' == $_REQUEST['action'] ) {
 			foreach ($_REQUEST as $key=>$value) {
 				if( isset( $_REQUEST[ $key ] ) ) { 
 					update_option( $key , $value  ); } 
 				else { delete_option( $key ); } 
 				}
-				header("Location: admin.php?page=admin_menu.php&saved=true");
+				header("Location: admin.php?page=wpc-management&saved=true");
 				die;
 		}
 		else if( 'reset' == $_REQUEST['action'] ) {
 			foreach ($_REQUEST as $key=>$value) {
 				delete_option( $key ); }
-				header("Location: admin.php?page=admin_menu.php&reset=true");
+				header("Location: admin.php?page=wpc-management&reset=true");
 				die;
 			}
 	}
@@ -69,6 +130,7 @@ $wp_cats = array();
 	function register_my_custom_submenu_page() {
 		add_submenu_page(get_admin_page_parent(), 'Section Management', 'Section Management', 'manage_options', 'section-management', 'get_add_section_page_admin' );
 		add_submenu_page(get_admin_page_parent(), 'Fields Management', 'Fields Management', 'manage_options', 'field-management', 'get_add_field_page_admin' );
+		add_submenu_page(get_admin_page_parent(), 'How to use', 'How to use', 'manage_options', 'how-to-use-wpc', 'how_to_use' );
 	}
 	
 	/* Include Fields Management File
@@ -90,7 +152,15 @@ $wp_cats = array();
 		if ( file_exists( $Add_section_file ) )
 			require $Add_section_file;
 	}
-
+	/* Include How to Use File
+	* Davinder Singh
+	**/
+	
+	function how_to_use(){
+		$Add_how_to_use = plugin_dir_path( __FILE__ ) . "wpc_how_to_use.php";
+		if ( file_exists( $Add_how_to_use ) )
+			require $Add_how_to_use;
+	}
 	/* Description : Include all the Jquery and css files here
 	 * 
 	 * Author : Davinder Singh
@@ -121,8 +191,8 @@ $wp_cats = array();
 	function mytheme_admin() {
 	global $themename, $shortname ,$wpcInstance;
 	$i=0;
-	if ( $_REQUEST['saved'] ) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' settings saved.</strong></p></div>';
-	if ( $_REQUEST['reset'] ) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' settings reset.</strong></p></div>';
+	if ( $_REQUEST['saved'] ) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' saved.</strong></p></div>';
+	if ( $_REQUEST['reset'] ) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' reset.</strong></p></div>';
 	?>
 	
 	
