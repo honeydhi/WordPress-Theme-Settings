@@ -71,14 +71,18 @@ if((!empty($_POST) && $_POST['wpc_save_section']=='Save Changes')){
   <?php 
 	$getSectionArray = $wpcInstance->getSections(); 
 	foreach ($getSectionArray as $value){
-	if($value->id != 1){
+	if($value->id == 1) :
 	?>
+	<tr>
+		<td colspan="3"><?php echo $value->wpc_Title; ?></td>
+	</tr>
+	<?php   else :?>
 	<tr>
 		<td><?php echo $value->wpc_Title; ?></td>
 		<td><a href="<?php echo wp_nonce_url(admin_url('admin.php?page=section-management&del='.$value->id.''), 'doing_something', 'deleteSection');?>">Delete</a></td>		
 		<td><a href="<?php echo wp_nonce_url(admin_url('admin.php?page=section-management&edit='.$value->id.''), 'edit_something', 'editsection');?>">Edit</a></td>
 	</tr>
-	<?php } }?>
+	<?php endif; }?>
 	<tbody>
     </table>
 </div>

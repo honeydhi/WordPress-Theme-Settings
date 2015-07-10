@@ -124,6 +124,7 @@ if((!empty($_POST) && $_POST['wpc_save_field']=='Save Changes')){
   <tbody>
   <?php 
 	$getSectionArray = $wpcInstance->getAllFields(); 
+	if(!empty(	$getSectionArray)) :
 	foreach ($getSectionArray as $value){
 	?>
 	<tr>
@@ -132,7 +133,10 @@ if((!empty($_POST) && $_POST['wpc_save_field']=='Save Changes')){
 		<td><a href="<?php echo wp_nonce_url(admin_url('admin.php?page=field-management&del='.$value->id.''), 'doing_something', 'deleteField');?>">Delete</a></td>		
 		<td><a href="<?php echo wp_nonce_url(admin_url('admin.php?page=field-management&edit='.$value->id.''), 'edit_something', 'editField');?>">Edit</a></td>
 	</tr>
-	<?php  }?>
+	<?php  } else :?>
+	
+	<tr><td colspan="4">No record found</td></tr>
+	<?php endif; ?>
 	</tbody>
     </table>
 </div>
@@ -153,16 +157,15 @@ jQuery(document).ready(function() {
 	jQuery("#wpc_optionKeyshow ,.wpc_type,.wpc_sectionID").focusout(function() {
 		var slug = jQuery('#wpc_optionKeyshow').val();
         slug=slug.toLowerCase();
-        //slug=slug.replace(/(^\s+|[^a-zA-Z0-9 ]+|\s+$)/g,"");
         slug=slug.replace(/\s+/g, "-");
 		jQuery.ajax({
 			url : '<?php echo admin_url('admin-ajax.php'); ?>',
 			type : 'POST',
 			dataType : 'json', 
-			data : {'action': 'check_slug','slug': slug},
+			data : {'action': 'wpc_check_slug','slug': slug},
 			success : function(response){
 			if(response == ''){
-			alert("slug already exist in our records please use another slug");
+			alert("slug Invalid/already exist in our records please use another slug");
 				jQuery('#wpc_optionKeyshow').val("");
 				jQuery('#wpc_optionKey').val("");
 			} else {
