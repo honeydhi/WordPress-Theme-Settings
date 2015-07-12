@@ -114,7 +114,7 @@ $wp_cats = array();
 				die;
 			}
 	}
-		add_menu_page($themename, $themename, 'administrator', 'wpc-management', 'wpc_admin');
+		add_menu_page($themename, $themename, 'administrator', 'wpc-management', 'wpc_admin',  plugin_dir_url( __FILE__ ) . 'images/wpc_theme_settings.png');
 		
 	}
 	
