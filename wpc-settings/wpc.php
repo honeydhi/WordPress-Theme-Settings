@@ -97,7 +97,7 @@ $wp_cats = array();
 	 
 	function wpc_add_admin() {
 	global $themename, $shortname ,$wpcInstance;
-	if ( $_GET['page'] =='wpc-management' ) {
+	if ( $_GET['page'] =='wpc-management' && isset($_REQUEST['action']) ) {
 			if ( 'save' == $_REQUEST['action'] ) {
 			foreach ($_REQUEST as $key=>$value) {
 				if( isset( $_REQUEST[ $key ] ) ) { 
@@ -185,8 +185,8 @@ $wp_cats = array();
 	function wpc_admin() {
 	global $themename, $shortname ,$wpcInstance;
 	$i=0;
-	if ( $_REQUEST['saved'] ) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' saved.</strong></p></div>';
-	if ( $_REQUEST['reset'] ) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' reset.</strong></p></div>';
+	if ( isset($_REQUEST['saved'] )) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' saved.</strong></p></div>';
+	if ( isset($_REQUEST['reset'] )) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' reset.</strong></p></div>';
 	?>
 	
 	

@@ -5,6 +5,7 @@ $value = '';
 $title = 'Add';
 $fromhiddenaction = 'add';
 $sectionId = '';
+$addNewLink = '';
 if((!empty($_POST) && $_POST['wpc_save_section']=='Save Changes')){
 	$saveSection = $wpcInstance->saveUpdateSection($_POST);
 	if($saveSection){
@@ -13,7 +14,7 @@ if((!empty($_POST) && $_POST['wpc_save_section']=='Save Changes')){
 	
 	}
 }
- if (isset($_GET['deleteSection']) || wp_verify_nonce($_GET['deleteSection'] , 'doing_something' )) { 	
+ if (isset($_GET['deleteSection']) && wp_verify_nonce($_GET['deleteSection'] , 'doing_something' )) { 	
 		$delsection = $wpcInstance->deleteSection($_GET['del']);
 		if($delsection){
 			echo '<div id="message" class="updated fade"><p><strong>Deleted Successfully.</strong></p></div>';
@@ -22,7 +23,7 @@ if((!empty($_POST) && $_POST['wpc_save_section']=='Save Changes')){
       
     }
 	
-	if (isset($_GET['editsection']) || wp_verify_nonce($_GET['editsection'] , 'edit_something' )) { 	
+	if (isset($_GET['editsection']) && wp_verify_nonce($_GET['editsection'] , 'edit_something' )) { 	
 		$sectionDatabyID = $wpcInstance->getSectionByID($_GET['edit']);
 		$value =  $sectionDatabyID->wpc_Title;
 		$title = 'Edit';

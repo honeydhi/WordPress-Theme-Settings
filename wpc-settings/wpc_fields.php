@@ -10,6 +10,8 @@ $title = 'Add';
 $fromhiddenaction = 'add';
 $sectionId = '';
 $disabled='';
+$addNewLink = '';
+$FieldId  = '';
 if((!empty($_POST) && $_POST['wpc_save_field']=='Save Changes')){
 	$saveField = $wpcInstance->insertField($_POST);
 	if($saveField){
@@ -19,7 +21,7 @@ if((!empty($_POST) && $_POST['wpc_save_field']=='Save Changes')){
 	}
 	
 }
- if (isset($_GET['deleteField']) || wp_verify_nonce($_GET['deleteField'] , 'doing_something' )) { 	
+ if (isset($_GET['deleteField']) && wp_verify_nonce($_GET['deleteField'] , 'doing_something' )) { 	
 		$deleteField = $wpcInstance->deleteField($_GET['del']);
 		if($deleteField){
 			echo '<div id="message" class="updated fade"><p><strong>Deleted Successfully.</strong></p></div>';
@@ -28,7 +30,7 @@ if((!empty($_POST) && $_POST['wpc_save_field']=='Save Changes')){
       
     }
 	
-	if (isset($_GET['editField']) || wp_verify_nonce($_GET['editField'] , 'edit_something' )) { 	
+	if (isset($_GET['editField']) && wp_verify_nonce($_GET['editField'] , 'edit_something' )) { 	
 		$getFieldByID = $wpcInstance->getFieldByID($_GET['edit']);
 		$name =  $getFieldByID->wpc_name;
 	 	$desc= $getFieldByID->wpc_description;
