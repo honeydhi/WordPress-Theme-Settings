@@ -2,7 +2,7 @@
 Contributors: Davinder Singh
 Tags: WordPress Custom Settings, Custom Settings, Update Options ,save content ,options, get_options , custom configuration
 Requires at least: 3.1
-Tested up to: 4.10
+Tested up to: 4.11
 Stable tag: 3.0.4
 License: GPLv2 or later
 
