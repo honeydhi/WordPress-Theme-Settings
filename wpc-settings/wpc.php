@@ -48,6 +48,18 @@ function wpc_install() {
 	dbDelta( $sqlForSection );
 	dbDelta( $sqlForFields );
 	add_option( 'wpc_db_version', $wpc_db_version );
+
+
+	$administrator = get_role( 'administrator' );
+	if ( !empty( $administrator ) ) {
+		$administrator->add_cap( 'edit_custom_settings' );
+	}
+
+	$customSettingsUser = get_role( 'custom_settings_user' );
+	if ( empty( $customSettingsUser ) ) {
+		$customSettingsUser = add_role( 'custom_settings_user', 'Custom settings user', [ 'read' => true ] );
+	}
+	$customSettingsUser->add_cap( 'edit_custom_settings' );
 }
 function wpc_install_data() {
 	global $wpdb;
@@ -96,28 +108,31 @@ $wp_cats = array();
 	 * */
 	 
 	function wpc_add_admin() {
-	global $themename, $shortname ,$wpcInstance;
-	if ( $_GET['page'] =='wpc-management' && isset($_REQUEST['action']) ) {
-			if ( 'save' == $_REQUEST['action'] ) {
-			foreach ($_REQUEST as $key=>$value) {
-				if( isset( $_REQUEST[ $key ] ) ) { 
-					update_option( $key , $value  ); } 
-				else { delete_option( $key ); } 
+		global $themename, $shortname ,$wpcInstance;
+		if ( $_GET[ 'page' ] == 'wpc-management' && isset( $_REQUEST[ 'action' ] ) ) {
+			if ( 'save' == $_REQUEST[ 'action' ] ) {
+				foreach ( $_REQUEST as $key => $value ) {
+					if ( isset( $_REQUEST[ $key ] ) ) {
+						update_option( $key , $value  ); }
+					else {
+						delete_option( $key );
+					}
 				}
-				header("Location: admin.php?page=wpc-management&saved=true");
-				die;
-		}
-		else if( 'reset' == $_REQUEST['action'] ) {
-			foreach ($_REQUEST as $key=>$value) {
-				delete_option( $key ); }
-				header("Location: admin.php?page=wpc-management&reset=true");
+				header( "Location: admin.php?page=wpc-management&saved=true" );
 				die;
 			}
+			else if( 'reset' == $_REQUEST[ 'action' ] ) {
+				foreach ( $_REQUEST as $key => $value ) {
+					delete_option( $key );
+				}
+				header( "Location: admin.php?page=wpc-management&reset=true" );
+				die;
+			}
+		}
+		add_menu_page( $themename, $themename, 'edit_custom_settings', 'wpc-management', 'wpc_admin',  plugin_dir_url( __FILE__ ) . 'images/wpc_theme_settings.png' );
+
 	}
-		add_menu_page($themename, $themename, 'administrator', 'wpc-management', 'wpc_admin',  plugin_dir_url( __FILE__ ) . 'images/wpc_theme_settings.png');
-		
-	}
-	
+
 	/* Add Section Management and Fields Management pages here
 	* Author Davinder Singh
 	*/
