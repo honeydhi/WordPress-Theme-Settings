@@ -2,10 +2,13 @@
 /*
     Plugin Name: WordPress Custom settings 
     Plugin URI: https://about.me/honeydavinder
-    Description: Plugin for setting up the basic information like social media settings and footer content, this pluign helps the developer to save some of miscellaneous items easily there is no need to make any specific widgets and post type just save all the values in options .
+    Description: Plugin for setting up the basic information like social media settings and footer content, this plugin helps the developer to save some of miscellaneous items easily there is no need to make any specific widgets and post type just save all the values in options.
     Author: Davinder Singh
-    Version: 1.0
+    Version: 1.1
     Author URI: https://about.me/honeydavinder
+    Requires at least: 6.0
+    Tested up to: 7.0
+    Requires PHP: 7.4
     */
 
 /* Set your theme name & shortname to get options fields*/
@@ -97,7 +100,7 @@ $wp_cats = array();
 	 
 	function wpc_add_admin() {
 	global $themename, $shortname ,$wpcInstance;
-	if ( $_GET['page'] =='wpc-management' && isset($_REQUEST['action']) ) {
+	if ( isset( $_GET['page'] ) && $_GET['page'] == 'wpc-management' && isset( $_REQUEST['action'] ) ) {
 			if ( 'save' == $_REQUEST['action'] ) {
 			foreach ($_REQUEST as $key=>$value) {
 				if( isset( $_REQUEST[ $key ] ) ) { 
@@ -114,7 +117,7 @@ $wp_cats = array();
 				die;
 			}
 	}
-		add_menu_page($themename, $themename, 'administrator', 'wpc-management', 'wpc_admin',  plugin_dir_url( __FILE__ ) . 'images/wpc_theme_settings.png');
+		add_menu_page($themename, $themename, 'manage_options', 'wpc-management', 'wpc_admin',  plugin_dir_url( __FILE__ ) . 'images/wpc_theme_settings.png');
 		
 	}
 	
@@ -162,18 +165,12 @@ $wp_cats = array();
 	 * */
 	function wpc_add_init() {
 		$plugin_URL = plugin_dir_url( __FILE__ );
-		wp_enqueue_style("functions", $plugin_URL."css/functions.css", false, "1.0", "all");
-		wp_enqueue_style("functions-styles", $plugin_URL."css/admin-style.css", false, "1.0", "all");
-		wp_enqueue_style("table-styles", $plugin_URL."themes/blue/style.css", false, "1.0", "all");
-		wp_enqueue_script("am_script", $plugin_URL."js/am_script.js", false, "1.0");
-		wp_enqueue_script("upload_box", $plugin_URL."js/upload_box.js", false, "1.0");
-		wp_enqueue_script('jquery-validation', $plugin_URL."js/jquery.validate.min.js", false, "1.0");
-		wp_enqueue_script('jquery-wpc-tablesorter', $plugin_URL."js/jquery.tablesorter.min.js", false, "1.0");
-		wp_enqueue_script('jquery-wpc-functions', $plugin_URL."js/wpc_functions.js", false, "1.0");
-		wp_enqueue_script('media-upload');
-		wp_enqueue_script('thickbox');
-		wp_enqueue_script('my-upload');
-		wp_enqueue_style('thickbox');
+		wp_enqueue_style( 'wpc-functions', $plugin_URL . 'css/functions.css', array(), '2.1', 'all' );
+		wp_enqueue_style( 'wpc-admin-style', $plugin_URL . 'css/admin-style.css', array(), '2.1', 'all' );
+		wp_enqueue_script( 'postbox' );
+		wp_enqueue_script( 'jquery-validation', $plugin_URL . 'js/jquery.validate.min.js', array( 'jquery' ), '2.0' );
+		wp_enqueue_script( 'jquery-wpc-functions', $plugin_URL . 'js/wpc_functions.js', array( 'jquery' ), '2.0' );
+		wp_enqueue_media();
 	}
 	
 	/* Description : Display the setting page in admin
@@ -185,107 +182,192 @@ $wp_cats = array();
 	function wpc_admin() {
 	global $themename, $shortname ,$wpcInstance;
 	$i=0;
-	if ( isset($_REQUEST['saved'] )) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' saved.</strong></p></div>';
-	if ( isset($_REQUEST['reset'] )) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' reset.</strong></p></div>';
 	?>
-	
-	
-<div class="wrap am_wrap">
-	<h2><?php echo $themename; ?> Options Panel</h2>
-		<div class="am_opts">
-			
-<p>Please, use the menu below to setting up your theme.</p>			
-<br/>
-<form method="post">
-<?php
-	$GetSectionsArray = $wpcInstance->getSections();
-	foreach($GetSectionsArray as $GetSections){ 
-	
-	?>
-	<div class="am_section">
-		<div class="am_title">
-		<h3><img src="<?php echo  plugin_dir_url( __FILE__ ); ?>/images/trans.png" class="inactive" alt=""><?php  echo $GetSections->wpc_Title; ?></h3>
-		<!--span class="submit"><input name="save2" type="submit" value="Save Changes" /></span-->
-		<div class="clearfix"></div>
-	</div>
-	
-	<div class="am_options">
-	<?php  
-	$FieldsArray = $wpcInstance->getFields($GetSections->id ); 
-	foreach ($FieldsArray as $Fields){
-		switch ( $Fields->wpc_type ) {
-		case "text":
-	?>
-	<div class="am_input am_text">
-		<label for="<?php echo $Fields->wpc_name; ?>"><?php echo $Fields->wpc_name; ?></label>
-		<input name="<?php echo $Fields->wpc_optionKey; ?>" id="<?php echo $Fields->wpc_name; ?>" type="<?php echo $Fields->wpc_type; ?>" value="<?php if ( get_option( $Fields->wpc_optionKey ) != "") { echo stripslashes(get_option( $Fields->wpc_optionKey) ); } else {  } ?>" />
-		<small><?php echo $Fields->wpc_description; ?></small>
-		<div class="clearfix"></div>
-	</div>
-	<?php break; case 'textarea':?>
-	<div class="am_input am_textarea">
-	<label for="<?php echo $Fields->wpc_optionKey; ?>"><?php echo $Fields->wpc_name; ?></label>
-	<div class="texted"><textarea id="<?php echo $Fields->wpc_optionKey; ?>" name="<?php echo $Fields->wpc_optionKey; ?>" type="<?php echo $Fields->wpc_type; ?>" cols="" rows=""><?php if ( get_option( $Fields->wpc_optionKey ) != "") { echo stripslashes(get_option( $Fields->wpc_optionKey) ); } else {  } ?></textarea>
-	<div class="clear" style="margin:0;padding:0; clear:both;"></div>
-	</div>
-	<small><?php echo $Fields->description; ?></small><div class="clearfix"></div>
-	<script>
-		//<![CDATA[
-		bkLib.onDomLoaded(function() { new nicEditor().panelInstance('<?php echo $Fields->wpc_optionKey; ?>'); });
-		//]]>
-	</script>
-	</div>
-	<?php break; case 'textarea2': ?>
-	<div class="am_input am_textarea">
-			<label for="<?php echo $Fields->wpc_optionKey; ?>"><?php echo $Fields->wpc_name; ?></label>
-			<div class="texted"><textarea  name="<?php echo $Fields->wpc_optionKey; ?>" type="<?php echo $Fields->wpc_type; ?>" cols="" rows=""><?php if ( get_option( $Fields->wpc_optionKey ) != "") { echo stripslashes(get_option( $Fields->wpc_optionKey) ); } else { } ?></textarea>
-			<div class="clear" style="margin:0;padding:0; clear:both;"></div>
-		</div>
-		<small><?php echo $Fields->description; ?></small><div class="clearfix"></div>
-	</div> 
-	<?php break; case 'select':?>
-	<div class="am_input am_select">
-		<label for="<?php echo $Fields->wpc_optionKey; ?>"><?php echo $Fields->wpc_name; ?></label>
-			<select name="<?php echo $Fields->wpc_optionKey; ?>" id="<?php echo $Fields->wpc_optionKey; ?>">
-			<?php foreach ($value['options'] as $key=>$option) { ?>
-			<option <?php if (get_option( $Fields->wpc_optionKey ) == $key) { echo 'selected="selected"'; } ?> value="<?php echo $key; ?>"><?php echo $option; ?></option><?php } ?>
-			</select>
-		<small><?php echo $Fields->description; ?></small><div class="clearfix"></div>
-	</div>
-	<?php break; case 'upload': ?>
-	<div class="rm_input rm_upload">
-		<p class="awdMetaImage" style="padding-left:15px; max-width:720px;"><img  src="<?php if ( get_option( $Fields->wpc_optionKey ) != "") { echo stripslashes(get_option( $Fields->wpc_optionKey) ); } else { echo $value['std']; } ?>"  /> <p>
-		<label style="padding-left:15px;" for="<?php echo $Fields->wpc_optionKey; ?>"><?php echo $Fields->wpc_name; ?></label>
-		<input type="text" class="upload-url <?php echo $field_class; ?>" name="<?php echo $Fields->wpc_optionKey; ?>" id="<?php echo $Fields->wpc_name; ?>" value="<?php if ( get_option( $Fields->wpc_optionKey ) != "") { echo stripslashes(get_option( $Fields->wpc_optionKey ) ); } else {  } ?>" />
-		<input id="st_upload_button" class="st_upload_button" type="button" name="upload_button" value="Upload"  />
-	</div>
-	<?php break; case "checkbox":?>
-	<div class="am_input am_checkbox">
-		<label for="<?php echo $Fields->wpc_optionKey; ?>"><?php echo $value['name']; ?></label>
-		<?php if(get_option($Fields->wpc_optionKey)){ $checked = "checked=\"checked\""; }else{ $checked = "";} ?>
-		<input type="checkbox" name="<?php echo $Fields->wpc_optionKey; ?>" id="<?php echo $Fields->wpc_optionKey; ?>" value="true" <?php echo $checked; ?> />
-		<small><?php echo $Fields->description; ?></small><div class="clearfix"></div>
-	</div>
-	
-	<?php break; default: ?>
-	<?php }
-	} ?></div>
-	</div>
-<br/>
-	<?php }
+	<div class="wrap wpc-wrap">
+		<h1><?php echo esc_html($themename); ?> — Options Panel</h1>
+		<?php
+		if ( isset($_REQUEST['saved'] )) {
+			echo '<div class="notice notice-success is-dismissible"><p><strong>' . esc_html($themename) . ' settings saved.</strong></p></div>';
+		}
+		if ( isset($_REQUEST['reset'] )) {
+			echo '<div class="notice notice-warning is-dismissible"><p><strong>' . esc_html($themename) . ' settings reset.</strong></p></div>';
+		}
+		?>
+		<p>Use the panels below to configure your settings.</p>
 
-	?>
-	
-	<p class="submit save">
-			<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
+		<form method="post">
+		<?php wp_nonce_field( 'wpc_save_options', 'wpc_options_nonce' ); ?>
+		<?php
+		$GetSectionsArray = $wpcInstance->getSections();
+		foreach($GetSectionsArray as $GetSections){
+			$FieldsArray = $wpcInstance->getFields($GetSections->id);
+			$isEmpty = empty($FieldsArray);
+			$postbox_class = 'postbox closed' . ($isEmpty ? ' wpc-disabled-postbox' : '');
+		?>
+		<div class="wpc-postbox">
+			<div class="<?php echo esc_attr($postbox_class); ?>">
+				<div class="postbox-header">
+					<h2 class="hndle">
+						<span class="wpc-status-dot <?php echo $isEmpty ? 'wpc-status-empty' : 'wpc-status-has-fields'; ?>"></span>
+						<span><?php echo esc_html( $GetSections->wpc_Title ); ?> <?php if($isEmpty) echo '<small>(No fields)</small>'; ?></span>
+					</h2>
+					<?php if (!$isEmpty) : ?>
+					<div class="handle-actions hide-if-no-js">
+						<button type="button" class="handlediv" aria-expanded="false">
+							<span class="screen-reader-text"><?php printf( esc_html__( 'Toggle panel: %s' ), esc_html( $GetSections->wpc_Title ) ); ?></span>
+							<span class="toggle-indicator" aria-hidden="true"></span>
+						</button>
+					</div>
+					<?php endif; ?>
+				</div>
+				<div class="inside">
+					<div class="wpc-field-group">
+					<?php
+					if ($isEmpty) {
+						echo '<div class="wpc-field-row"><div class="wpc-field-input"><p class="description">This section currently has no fields. Add fields in the <a href="'.admin_url('admin.php?page=field-management').'">Fields Management</a> page.</p></div></div>';
+					} else {
+					foreach ($FieldsArray as $Fields){
+						switch ( $Fields->wpc_type ) {
+						case 'text':
+					?>
+						<div class="wpc-field-row">
+							<div class="wpc-field-label">
+								<label for="<?php echo esc_attr($Fields->wpc_optionKey); ?>"><?php echo esc_html($Fields->wpc_name); ?></label>
+							</div>
+							<div class="wpc-field-input">
+								<input name="<?php echo esc_attr($Fields->wpc_optionKey); ?>" id="<?php echo esc_attr($Fields->wpc_optionKey); ?>" type="text" value="<?php echo esc_attr( stripslashes( get_option( $Fields->wpc_optionKey, '' ) ) ); ?>" class="regular-text" />
+								<?php if ( ! empty( $Fields->wpc_description ) ) : ?>
+									<p class="description"><?php echo esc_html($Fields->wpc_description); ?></p>
+								<?php endif; ?>
+							</div>
+						</div>
+					<?php break; case 'textarea': ?>
+						<div class="wpc-field-row">
+							<div class="wpc-field-label">
+								<label for="<?php echo esc_attr($Fields->wpc_optionKey); ?>"><?php echo esc_html($Fields->wpc_name); ?></label>
+							</div>
+							<div class="wpc-field-input">
+								<div class="wpc-wp-editor-wrap">
+									<?php 
+									$content = get_option( $Fields->wpc_optionKey, '' );
+									wp_editor( stripslashes($content), $Fields->wpc_optionKey, array(
+										'textarea_name' => $Fields->wpc_optionKey,
+										'textarea_rows' => 8,
+										'media_buttons' => true,
+										'tinymce'       => true,
+										'quicktags'     => true
+									));
+									?>
+								</div>
+								<?php if ( ! empty( $Fields->wpc_description ) ) : ?>
+									<p class="description"><?php echo esc_html($Fields->wpc_description); ?></p>
+								<?php endif; ?>
+							</div>
+						</div>
+					<?php break; case 'textarea2': ?>
+						<div class="wpc-field-row">
+							<div class="wpc-field-label">
+								<label for="<?php echo esc_attr($Fields->wpc_optionKey); ?>"><?php echo esc_html($Fields->wpc_name); ?></label>
+							</div>
+							<div class="wpc-field-input">
+								<textarea name="<?php echo esc_attr($Fields->wpc_optionKey); ?>" id="<?php echo esc_attr($Fields->wpc_optionKey); ?>" rows="6" class="large-text"><?php echo esc_textarea( stripslashes( get_option( $Fields->wpc_optionKey, '' ) ) ); ?></textarea>
+								<?php if ( ! empty( $Fields->wpc_description ) ) : ?>
+									<p class="description"><?php echo esc_html($Fields->wpc_description); ?></p>
+								<?php endif; ?>
+							</div>
+						</div>
+					<?php break; case 'select': ?>
+						<div class="wpc-field-row">
+							<div class="wpc-field-label">
+								<label for="<?php echo esc_attr($Fields->wpc_optionKey); ?>"><?php echo esc_html($Fields->wpc_name); ?></label>
+							</div>
+							<div class="wpc-field-input">
+								<select name="<?php echo esc_attr($Fields->wpc_optionKey); ?>" id="<?php echo esc_attr($Fields->wpc_optionKey); ?>">
+								<?php if ( isset($value['options']) && is_array($value['options']) ) { foreach ($value['options'] as $key=>$option) { ?>
+									<option <?php selected( get_option( $Fields->wpc_optionKey ), $key ); ?> value="<?php echo esc_attr($key); ?>"><?php echo esc_html($option); ?></option>
+								<?php } } ?>
+								</select>
+								<?php if ( ! empty( $Fields->wpc_description ) ) : ?>
+									<p class="description"><?php echo esc_html($Fields->wpc_description); ?></p>
+								<?php endif; ?>
+							</div>
+						</div>
+					<?php break; case 'upload': ?>
+						<div class="wpc-field-row">
+							<div class="wpc-field-label">
+								<label for="<?php echo esc_attr($Fields->wpc_optionKey); ?>"><?php echo esc_html($Fields->wpc_name); ?></label>
+							</div>
+							<div class="wpc-field-input">
+								<?php $upload_val = stripslashes( get_option( $Fields->wpc_optionKey, '' ) ); ?>
+								<div class="wpc-upload-preview">
+									<?php if ( ! empty( $upload_val ) ) : ?>
+										<img src="<?php echo esc_url( $upload_val ); ?>" alt="" />
+									<?php endif; ?>
+								</div>
+								<div class="wpc-upload-field">
+									<input type="text" name="<?php echo esc_attr($Fields->wpc_optionKey); ?>" id="<?php echo esc_attr($Fields->wpc_optionKey); ?>" value="<?php echo esc_attr( $upload_val ); ?>" class="regular-text" />
+									<button type="button" class="button wpc-media-upload" data-target="<?php echo esc_attr($Fields->wpc_optionKey); ?>"><?php esc_html_e('Upload'); ?></button>
+								</div>
+							</div>
+						</div>
+					<?php break; case 'checkbox': ?>
+						<div class="wpc-field-row">
+							<div class="wpc-field-label">
+								<?php echo esc_html($Fields->wpc_name); ?>
+							</div>
+							<div class="wpc-field-input">
+								<label for="<?php echo esc_attr($Fields->wpc_optionKey); ?>">
+									<input type="checkbox" name="<?php echo esc_attr($Fields->wpc_optionKey); ?>" id="<?php echo esc_attr($Fields->wpc_optionKey); ?>" value="true" <?php checked( get_option($Fields->wpc_optionKey), 'true' ); ?> />
+									<?php if ( ! empty( $Fields->wpc_description ) ) echo esc_html($Fields->wpc_description); ?>
+								</label>
+							</div>
+						</div>
+					<?php break; default: ?>
+					<?php } // end switch
+					} // end foreach fields
+					} // end if !isEmpty ?>
+					</div><!-- .wpc-field-group -->
+				</div><!-- .inside -->
+			</div><!-- .postbox -->
+		</div><!-- .wpc-postbox -->
+		<?php } // end foreach sections ?>
+
+		<div class="wpc-submit-box">
+			<input type="submit" class="button button-primary" value="<?php esc_attr_e('Save Changes'); ?>" />
 			<input type="hidden" name="action" value="save" />
-		</p>
-	</form>
-</div> 
+		</div>
+		</form>
 
+		<script>
+		jQuery(document).ready(function($){
+			// Collapsible postbox toggle
+			$('.wpc-postbox .handlediv, .wpc-postbox .hndle').on('click', function(){
+				var $postbox = $(this).closest('.postbox');
+				if ($postbox.hasClass('wpc-disabled-postbox')) {
+					return false;
+				}
+				$postbox.toggleClass('closed');
+				var isClosed = $postbox.hasClass('closed');
+				$postbox.find('.handlediv').attr('aria-expanded', isClosed ? 'false' : 'true');
+			});
+			// Media upload
+			$('.wpc-media-upload').on('click', function(e){
+				e.preventDefault();
+				var targetId = $(this).data('target');
+				var frame = wp.media({ title: 'Select or Upload Media', button: { text: 'Use this media' }, multiple: false });
+				frame.on('select', function(){
+					var attachment = frame.state().get('selection').first().toJSON();
+					$('#' + targetId).val(attachment.url);
+					$(e.target).closest('td').find('.wpc-upload-preview').html('<img src="' + attachment.url + '" />');
+				});
+				frame.open();
+			});
+		});
+		</script>
+	</div><!-- .wrap -->
 <?php
 }
-add_action('admin_init', 'wpc_add_init');
+add_action('admin_enqueue_scripts', 'wpc_add_init');
 add_action('admin_menu', 'wpc_add_admin');
 add_action('admin_menu', 'wpc_register_submenu_page');
 
@@ -296,9 +378,9 @@ add_action("wp_ajax_nopriv_wpc_check_slug", "wpc_check_slug");
 function wpc_check_slug(){
 	global $wpdb;
 	global $wpcInstance;
-	$slug = trim($_POST['slug']);
+	$slug = isset($_POST['slug']) ? sanitize_text_field( wp_unslash( $_POST['slug'] ) ) : '';
 	$result = $wpcInstance->createslug($slug);
-	print_r($result); 
+	wp_send_json($result); 
 	die();
 	}
 ?>

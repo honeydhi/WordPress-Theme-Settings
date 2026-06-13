@@ -1,528 +1,412 @@
-.am_wrap{width:740px;}
-
-
-
-.am_section{
-
-	border:1px solid #dfdfdf;
-
-	border-bottom:0;
-
-	background:#f9f9f9;
-
-	}
-
-
-
-.am_opts label{
-
-	font-size:11px;
-
-	font-weight:bold;
-
-	width:170px;
-
-	display:block;
-
-	float:left;
-
-	vertical-align:middle;
-
-	}
-
-
-
-.am_input {
-
-	padding:15px 5px 15px 15px;
-
-	border-bottom:1px solid #dfdfdf;
-
-	border-top:1px solid #fff;
-
-	}
-
-	
-
-.am_opts small{
-
-	display:block;
-
-	float:right;
-
-	width:250px;
-
-	color:#999;
-
-	padding-right:15px;
-
-	}
-
-	
-
-.am_opts input[type="text"], .am_opts select{
-
-	width:250px;
-
-	font-size:11px;
-
-	padding:2px;
-
-	color:#333;
-
-	line-height:1em;
-
-	background:#f3f3f3;
-
-	}
-
-	
-
-.am_input input:focus, .am_input textarea:focus{background:#fff;}
-
-
-
-.am_input textarea{
-
-	width:250px;
-
-	height:130px;
-
-	font-size:11px;
-
-	padding:4px;
-
-	color:#333;
-
-	line-height:1.5em;
-
-	background:#f3f3f3;
-
-	}
-
-	
-
-.am_title h3 {
-
-	cursor:pointer;
-
-	font-size:1em;
-
-	/*text-transform:uppercase;*/
-
-	margin:0;
-
-	font-weight:bold;
-
-	color:#222;
-
-	float:left;
-
-	width:80%;
-
-	padding:15px 5px 10px 5px;
-
-	font-size:12px;
-
-	}
-
-
-
-.am_title{
-
-	cursor:pointer;
-
-	border-bottom:1px solid #dfdfdf;
-
-	background:#f1f1f1;
-
-	padding:0;
-
-	}
-
-
-
-.am_title h3 img.inactive{
-
-	margin:-6px 10px 0 2px;
-
-	width:32px;
-
-	height:32px;	
-
-	background:url('../images/pointer.png') no-repeat 0 0;
-
-	float:left;
-
-	}
-
-
-
-.am_title h3 img.active{
-
-	margin:-5px 10px 0 2px;
-
-	width:32px;
-
-	height:32px;
-
-	background:url('../images/pointer.png') no-repeat  0 -32px;
-
-	float:left;
-
-	}
-
-		
-
-.am_title h3:hover img{}
-
-
-
-.am_title span.submit{
-
-	display:block;
-
-	float:right;
-
-	margin:0;
-
-	padding:0;
-
-	width:15%;
-
-	padding:14px 0;
-
-	}
-
-
-
-.clearfix{clear:both;}
-
-
-
-.am_table th, .am_table td{
-
-	border:1px solid #bbb;
-
-	padding:10px;
-
-	text-align:center;
-
-	}
-
-
-
-.am_table th, .am_table td.feature{border-color:#888;}
-
-
-
-.save {margin-top:0;padding-top:0;}
-
-
-
-
-
-/* Meta Box
-
-----------------------------------------------------------------------------------------------------*/
-
-
-
-#container {
-
-	padding:5px;
-
-	background:#f9f9f9;
-
-	/*border:#dfdfdf 1px solid;*/
-
-	}
-
-
-
-#container input {width:350px;}
-
-
-
-#container img {height:80px;}
-
-	
-
-.thumb_img {
-
-	border:#dfdfdf 1px solid;
-
-	padding:5px;
-
-	float:right;
-
-	min-height:80px;
-
-	min-width:80px;
-
-	text-align:center;
-
-	margin-top:-45px;
-
-	margin-right:5px;
-
-	background:#fff url('../images/no_pic.png') center no-repeat;
-
-	}
-
-
-
-#notice {padding:5px 5px 10px 5px;}
-
-
-
-#notice_video {
-
-	padding:10px 5px 10px 5px;
-
-	border-top:#dfdfdf 1px solid;
-
-	}
-
-
-
-#picture_box {
-
-	border-top:#dfdfdf 1px solid;
-
-	padding:10px 5px 10px 5px;
-
-	}
-
-
-
-#upload_button {
-
-	cursor:default;
-
-	padding:16px 0 5px 8px;
-
-	height:14px;
-
-	background:url('../images/upload.png') no-repeat 0 10px;
-
-	text-decoration:none;
-
-	}
-
-
-
-#upload_button a {text-decoration:none;}
-
-#footer
-{
-display:none;
+/* ==========================================================================
+   WPC Settings – WordPress Native Admin Styles (WP 6.9+)
+   ========================================================================== */
+
+/* ---- Main Wrap ---- */
+.wpc-wrap {
+    max-width: 1200px;
+    margin: 10px 20px 0 20px;
+    padding: 10px 0;
 }
-.texted div
-{
-   margin-left: 172px;
+
+.wpc-wrap h1 {
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 29px;
+    margin: 15px 0 25px 0 !important;
+    padding: 0;
 }
-.nicEdit-panelContain {
-    margin: 0 !important;
+
+/* ---- Postbox Section Panels ---- */
+.wpc-postbox {
+    margin-bottom: 16px;
 }
-.nicEdit-panelContain div{
-   margin: 0 !important;
+
+.wpc-postbox .postbox {
+    margin-bottom: 0;
 }
-.nicEdit-main 
-{
-	 margin: 0 !important;
 
-	  padding-left: 7px !important;
+.wpc-wrap .postbox .hndle {
+    cursor: pointer;
+    font-size: 14px;
+    padding: 12px 20px;
+    margin: 0;
+    line-height: 1.4;
+    user-select: none;
+    font-weight: 600;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 }
-.nicEdit-main div{
-    margin: 0 !important;
-	padding-left: 9px;
+
+.wpc-wrap .postbox .hndle span {
+    display: inline-block;
+    padding-right: 10px;
 }
-#dhtmlgoodies_colorPicker{
-		position:absolute;
-		width:250px;
-		padding-bottom:1px;
-		background-color:#FFF;
-		border:1px solid #317082;
-		
-		width: 252px;	/* IE 5.x */
-		width/* */:/**/250px;	/* Other browsers */
-		width: /**/250px;	
-				
-	}
-	
-	#dhtmlgoodies_colorPicker .colorPicker_topRow{
-		padding-bottom:1px;
-		border-bottom:3px double #317082;
-		background-color:#E2EBED;
-		padding-left:2px;
-		
-		width: 250px;	/* IE 5.x */
-		width/* */:/**/248px;	/* Other browsers */
-		width: /**/248px;	
-		
-		height: 20px;	/* IE 5.x */
-		height/* */:/**/16px;	/* Other browsers */
-		height: /**/16px;	
-				
-	}
-	
-	#dhtmlgoodies_colorPicker .colorPicker_statusBar{
-		height:13px;
-		padding-bottom:2px;
-		width:248px;
-		border-top:3px double #317082;	
-		background-color:#E2EBED;
-		padding-left:2px;
-		clear:both;
-		
-		width: 250px;	/* IE 5.x */
-		width/* */:/**/248px;	/* Other browsers */
-		width: /**/248px;	
-		
-		height: 18px;	/* IE 5.x */
-		height/* */:/**/13px;	/* Other browsers */
-		height: /**/13px;	
-						
-	}
-	
-	#dhtmlgoodies_colorPicker .colorSquare{
-		margin-left:1px;
-		margin-bottom:1px;
-		float:left;
-		border:1px solid #000;
-		cursor:pointer;
-		
-		width: 12px;	/* IE 5.x */
-		width/* */:/**/10px;	/* Other browsers */
-		width: /**/10px;	
-		
-		height: 12px;	/* IE 5.x */
-		height/* */:/**/10px;	/* Other browsers */
-		height: /**/10px;	
-				
-	}
-	
-	.colorPickerTab_inactive,.colorPickerTab_active{
-	
-		height:17px;
-		padding-left:4px;
-		cursor:pointer;	
-		
-		
-	}
-	.colorPickerTab_inactive span{
-		background-image:url('../images/tab_left_inactive.gif');
-	}
-	
-	.colorPickerTab_active span{
-		background-image:url('../images/tab_left_active.gif');
 
-	}
-	.colorPickerTab_inactive span, .colorPickerTab_active span{
-		line-height:16px;
-		font-weight:bold;
-		font-family:arial;
-		font-size:11px;
-		padding-top:1px;
-		vertical-align:middle;
-		background-position:top left;
-		background-repeat: no-repeat;	
-		float:left;
-		padding-left:6px;
-		-moz-user-select:no;
-	}	
-	.colorPickerTab_inactive img,.colorPickerTab_active img{
-		float:left;
-	}
-	.colorPickerCloseButton{
-		width:11px;
-		height:11px;
-		text-align:center;
-		line-height:10px;
-		border:1px solid #317082;
-		position:absolute;
-		right:1px;
-		font-size:12px;
-		font-weight:bold;
-		top:1px;
-		padding:1px;
-		cursor:pointer;	
-		
-		width: 15px;	/* IE 5.x */
-		width/* */:/**/11px;	/* Other browsers */
-		width: /**/11px;
-		
-		height: 15px;	/* IE 5.x */
-		height/* */:/**/11px;	/* Other browsers */
-		height: /**/11px;
+.wpc-wrap .postbox .inside {
+    padding: 0;
+    margin: 0;
+}
 
-			
-	}
-	#colorPicker_statusBarTxt{
-		font-size:11px;
-		font-family:arial;
-		vertical-align:top;
-		line-height:13px;
+/* Toggle arrow indicator */
+.wpc-wrap .postbox .postbox-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #c3c4c7;
+    background: #fff;
+}
 
-	}
+.wpc-wrap .postbox .postbox-header .hndle {
+    flex: 1;
+    border: none;
+}
 
-	.form_widget_amount_slider{
-		border-top:1px solid #9d9c99;
-		border-left:1px solid #9d9c99;
-		border-bottom:1px solid #eee;
-		border-right:1px solid #eee;
-		background-color:#f0ede0;
-		position:absolute;
-		bottom:0px;
-		
-		width: 5px;	/* IE 5.x */
-		width/* */:/**/3px;	/* Other browsers */
-		width: /**/3px;
-		
-		height: 5px;	/* IE 5.x */
-		height/* */:/**/3px;	/* Other browsers */
-		height: /**/3px;
-				
-	}
-	.colorSliderLabel{
-		width:15px;
-		height:20px;
-		float:left;
-		font-size:11px;
-		font-weight:bold;
-	}
-	.colorSlider{
-		width:175px;
-		height:20px;
-		float:left;
-	}
-	.colorInput{
-		width:45px;
-		height:20px;
-		float:left;
-	}	
-	.colorPreviewDiv{
-		width:186px;
-		margin-right:2px;
-		margin-top:1px;
-		border:1px solid #CCC;
-		height:20px;
-		float:left;
-		cursor:pointer;
-		
-		width: 188px;	/* IE 5.x */
-		width/* */:/**/186px;	/* Other browsers */
-		width: /**/186px;
-		
-		height: 22px;	/* IE 5.x */
-		height/* */:/**/20px;	/* Other browsers */
-		height: /**/20px;
-				
+.wpc-postbox .postbox .handle-actions {
+    padding: 0 8px;
+}
 
-	}
-	.colorCodeDiv{
-		width:50px;
-		height:20px;
-		float:left;
-	}
+.wpc-postbox .postbox .handlediv {
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 8px;
+    font-size: 14px;
+    color: #787c82;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wpc-postbox .postbox .handlediv:hover {
+    color: #135e96;
+}
+
+.wpc-postbox .postbox .handlediv .toggle-indicator::before {
+    content: "\f142";
+    font-family: dashicons;
+    font-size: 20px;
+    display: inline-block;
+    transition: transform 0.15s ease;
+}
+
+.wpc-postbox .postbox.closed .handlediv .toggle-indicator::before {
+    content: "\f140";
+}
+
+.wpc-postbox .postbox.closed .inside {
+    display: none;
+}
+
+/* ---- Field Groups (replacing form-table) ---- */
+.wpc-field-group {
+    padding: 10px 0;
+}
+
+.wpc-field-row {
+    display: flex;
+    padding: 15px 20px;
+    border-bottom: 1px solid #f0f0f1;
+    align-items: flex-start;
+}
+
+.wpc-field-row:last-child {
+    border-bottom: none;
+}
+
+.wpc-field-label {
+    flex: 0 0 200px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #1d2327;
+    padding-top: 5px;
+}
+
+/* Definitive full-width rule for all plugin fields */
+.wpc-wrap input:not([type="submit"]):not([type="checkbox"]):not([type="radio"]),
+.wpc-wrap select,
+.wpc-wrap textarea {
+    width: 100% !important;
+    /* min-width: 100% !important; */
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    display: block !important;
+}
+
+.wpc-field-input {
+    flex: 1;
+    width: 100%;
+}
+
+.wpc-field-input .description {
+    font-style: italic;
+    color: #646970;
+    margin-top: 8px;
+    display: block;
+    font-size: 13px;
+}
+
+/* Compact (for sidebar forms) */
+.wpc-field-group-compact .wpc-field-row {
+    flex-direction: column;
+    padding: 12px 15px;
+}
+
+.wpc-field-group-compact .wpc-field-label {
+    flex: none;
+    width: 100%;
+    padding-bottom: 8px;
+}
+
+.wpc-field-group-compact .wpc-field-input input[type="text"],
+.wpc-field-group-compact .wpc-field-input select,
+.wpc-field-group-compact .wpc-field-input textarea {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* ---- Div-based Grid Table (replacing wp-list-table) ---- */
+.wpc-grid-table {
+    background: #fff;
+}
+
+.wpc-grid-header {
+    display: flex;
+    background: #fff;
+    border-bottom: 1px solid #dcdcde;
+    font-weight: 600;
+    padding: 10px 15px;
+}
+
+.wpc-grid-row {
+    display: flex;
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f1;
+    align-items: center;
+}
+
+.wpc-grid-row:nth-child(even) {
+    background: #f6f7f7;
+}
+
+.wpc-grid-row:hover {
+    background: #f0f0f1;
+}
+
+.wpc-grid-col {
+    flex: 1;
+    padding-right: 15px;
+}
+
+.wpc-grid-col-actions {
+    flex: 0 0 120px;
+    text-align: right;
+    padding-right: 0;
+}
+
+/* ---- Two Column Layout (Sections / Fields Management) ---- */
+.wpc-col-container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.wpc-col-left {
+    flex: 0 0 380px;
+    min-width: 300px;
+}
+
+.wpc-col-right {
+    flex: 1;
+    min-width: 400px;
+}
+
+/* ---- WP List Table tweaks ---- */
+.wpc-wrap .wp-list-table {
+    margin-top: 0;
+}
+
+.wpc-wrap .wp-list-table td,
+.wpc-wrap .wp-list-table th {
+    vertical-align: middle;
+}
+
+.wpc-wrap .wp-list-table .row-actions a.delete {
+    color: #b32d2e;
+}
+
+.wpc-wrap .wp-list-table .row-actions a.delete:hover {
+    color: #a00;
+}
+
+.wpc-wrap .wp-list-table .column-actions {
+    width: 160px;
+}
+
+.wpc-wrap .row-actions {
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: static !important;
+}
+
+/* ---- Upload Field ---- */
+.wpc-upload-preview {
+    margin-bottom: 10px;
+}
+
+.wpc-upload-preview img {
+    max-width: 100%;
+    max-height: 200px;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    padding: 4px;
+    background: #fff;
+}
+
+.wpc-upload-field {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.wpc-upload-field input[type="text"] {
+    flex: 1;
+}
+
+/* ---- Card (How to Use) ---- */
+.wpc-card {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 24px 32px;
+    margin-top: 16px;
+    max-width: 800px;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+.wpc-card h2 {
+    margin-top: 24px;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.wpc-card h2:first-child {
+    margin-top: 0;
+}
+
+.wpc-card h3 {
+    font-size: 1em;
+    font-weight: 600;
+    margin: 16px 0 8px;
+}
+
+.wpc-card code {
+    background: #f0f0f1;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 13px;
+}
+
+.wpc-card pre {
+    background: #f0f0f1;
+    padding: 12px 16px;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.wpc-card pre code {
+    background: none;
+    padding: 0;
+}
+
+.wpc-card img {
+    max-width: 100%;
+    height: auto;
+    margin: 12px 0;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.wpc-card hr {
+    border: none;
+    border-top: 1px solid #dcdcde;
+    margin: 24px 0;
+}
+
+/* ---- Notices ---- */
+.wpc-wrap .notice {
+    margin: 5px 0 15px 0;
+}
+
+/* ---- Submit Box ---- */
+.wpc-submit-box {
+    padding: 12px 0 0;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* ---- Required star ---- */
+.wpc-required {
+    color: #d63638;
+    margin-left: 2px;
+}
+
+/* ---- Responsive ---- */
+@media screen and (max-width: 782px) {
+    .wpc-col-container {
+        flex-direction: column;
+    }
+
+    .wpc-col-left,
+    .wpc-col-right {
+        flex: 1 1 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .wpc-form-table th {
+        width: auto;
+        display: block;
+        padding-bottom: 0;
+    }
+
+    .wpc-form-table td {
+        display: block;
+        padding-top: 4px;
+    }
+
+    .wpc-form-table td input[type="text"],
+    .wpc-form-table td textarea,
+    .wpc-form-table td select {
+        max-width: 100%;
+    }
+}
+
+/* ---- Status Indicator Dots ---- */
+.wpc-status-dot {
+    display: inline-block;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.wpc-status-dot.wpc-status-has-fields {
+    background-color: #46b450;
+    box-shadow: 0 0 6px rgba(70, 180, 80, 0.6);
+}
+
+.wpc-status-dot.wpc-status-empty {
+    background-color: #d63638;
+    box-shadow: 0 0 6px rgba(214, 54, 56, 0.4);
+}

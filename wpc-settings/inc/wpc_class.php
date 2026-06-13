@@ -158,7 +158,7 @@ class wpc{
 		 } else {
 			$slug = $slug;
 		 }
-		return json_encode($slug);
+		return $slug;
 	}
 	
 	/* Insert and update the field

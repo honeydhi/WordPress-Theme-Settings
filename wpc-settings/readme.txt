@@ -1,9 +1,10 @@
 === WordPress Custom Settings ===
 Contributors: Davinder Singh
 Tags: WordPress Custom Settings, Custom Settings, Update Options ,save content ,options, get_options , custom configuration
-Requires at least: 3.1
-Tested up to: 4.9
-Stable tag: 3.0.4
+Requires at least: 6.0
+Tested up to: 7.0
+Stable tag: 1.1
+Requires PHP: 7.4
 License: GPLv2 or later
 
 WordPress Custom Settings enables to save your custom settings like social media links some html block , text line, upload logo and files easily.
@@ -43,6 +44,13 @@ You're done!
 4. Use the following screenshot to call in WordPress Editor
 
 == Changelog ==
+
+= 1.1 =
+*Release Date - 13 June, 2026
+
+* Added WordPress 7 compatibility
+* Added 'Type' column in the Field Management tab to display field types
+* Closed all collapsible panels by default on the Settings page and added a status dot (green if fields exist, red if empty) to each header
 
 = 1.0.0 =
 *Release Date - 11 July, 2015

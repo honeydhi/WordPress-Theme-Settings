@@ -12,19 +12,19 @@ $sectionId = '';
 $disabled='';
 $addNewLink = '';
 $FieldId  = '';
-if((!empty($_POST) && $_POST['wpc_save_field']=='Save Changes')){
+if(!empty($_POST) && isset($_POST['wpc_save_field']) && $_POST['wpc_save_field']=='Save Changes'){
 	$saveField = $wpcInstance->insertField($_POST);
 	if($saveField){
-		echo '<div id="message" class="updated fade"><p><strong>Settings saved.</strong></p></div>';
+		echo '<div class="notice notice-success is-dismissible"><p><strong>Field saved successfully.</strong></p></div>';
 	} else {
-		echo '<div id="message" class="updated fade"><p><strong>Nothing saved.</strong></p></div>';
+		echo '<div class="notice notice-error is-dismissible"><p><strong>Nothing saved.</strong></p></div>';
 	}
 	
 }
  if (isset($_GET['deleteField']) && wp_verify_nonce($_GET['deleteField'] , 'doing_something' )) { 	
 		$deleteField = $wpcInstance->deleteField($_GET['del']);
 		if($deleteField){
-			echo '<div id="message" class="updated fade"><p><strong>Deleted Successfully.</strong></p></div>';
+			echo '<div class="notice notice-success is-dismissible"><p><strong>Field deleted successfully.</strong></p></div>';
 		}
 	} else {
       
@@ -40,143 +40,178 @@ if((!empty($_POST) && $_POST['wpc_save_field']=='Save Changes')){
 		$title = 'Edit';
 		$FieldId = $getFieldByID->id;
 		$disabled='disabled';
-		$addNewLink = '<a href="'. wp_nonce_url(admin_url('admin.php?page=field-management'), 'add_something', 'addnew').'">Add New Field</a>';
+		$addNewLink = '<a href="'. wp_nonce_url(admin_url('admin.php?page=field-management'), 'add_something', 'addnew').'" class="page-title-action">Add New Field</a>';
 		$fromhiddenaction = 'update';
 	} else {
       
     }
 ?>
-<div class="wrap am_wrap" style="float:left; width:50%;">
-<?php echo $addNewLink; ?>
-	<h2><?php echo $title; ?> Field</h2>
-		<div class="am_opts">
-	<p>Please, fill the following fields.</p>
-	<form 	id="wpc_field_form" method="POST" action="<?php echo $_SERVER['REQUEST_URI'] ; ?>" />	
-	 <?php wp_nonce_field( 'save_field','save_field' ); ?>	
-		<div class="am_section">
-			<div class="am_optionss">
-				<div class="am_input am_text">
-					<label for="wpc_name" style="width:100px;">Name :<span class="mandatory">*</span> </label>
-					<input name="wpc_name" id="wpc_name" type="text" value="<?php echo $name; ?>" />
-					<small style="width:190px;">Enter Field name</small>
-					<div class="clearfix"></div>
-				</div> 
+<div class="wrap wpc-wrap">
+	<h1 class="wp-heading-inline"><?php echo esc_html($title); ?> Field</h1>
+	<?php echo $addNewLink; ?>
+	<hr class="wp-header-end">
 
-				<div class="am_input am_text">
-					<label for="wpc_optionKey" style="width:100px;">Slug<span class="mandatory">*</span></label>
-					<input name="wpc_optionKeyshow" id="wpc_optionKeyshow" class="wpc_optionKeyshow" type="text" value="<?php echo $slug; ?>" <?php echo $disabled; ?>/>
-					<small style="width:190px;">This will used to get the field value</small>
-					<div class="clearfix"></div>
+	<div class="wpc-col-container">
+		<!-- Left Column: Add/Edit Form -->
+		<div class="wpc-col-left">
+			<div class="postbox">
+				<div class="postbox-header"><h2 class="hndle"><span><?php echo esc_html($title); ?> Field</span></h2></div>
+				<div class="inside">
+					<form action="admin.php?page=field-management" method="post">
+						<?php wp_nonce_field( 'save_field', 'save_field' ); ?>
+						<div class="wpc-field-group wpc-field-group-compact">
+							<div class="wpc-field-row">
+								<div class="wpc-field-label">Name <span class="required">*</span></div>
+								<div class="wpc-field-input">
+									<input name="wpc_name" id="wpc_name" type="text" value="<?php echo esc_attr($name); ?>" required />
+									<p class="description">Enter the field name.</p>
+								</div>
+							</div>
+							<div class="wpc-field-row">
+								<div class="wpc-field-label">Slug <span class="required">*</span></div>
+								<div class="wpc-field-input">
+									<input name="wpc_optionKeyshow" id="wpc_optionKeyshow" type="text" value="<?php echo esc_attr($slug); ?>" <?php echo esc_attr($disabled); ?> />
+									<p class="description">Used to retrieve the field value.</p>
+								</div>
+							</div>
+							<div class="wpc-field-row">
+								<div class="wpc-field-label">Description</div>
+								<div class="wpc-field-input">
+									<textarea name="wpc_description" id="wpc_description" rows="3"><?php echo esc_textarea($desc); ?></textarea>
+									<p class="description">Short description of the field (optional).</p>
+								</div>
+							</div>
+							<div class="wpc-field-row">
+								<div class="wpc-field-label">Field Type <span class="required">*</span></div>
+								<div class="wpc-field-input">
+									<select name="wpc_type" class="wpc_type" required>
+										<option value="">Select Field Type</option>
+										<option <?php selected($type, 'text'); ?> value="text">Text Box</option>
+										<option <?php selected($type, 'textarea'); ?> value="textarea">HTML Textarea</option>
+										<option <?php selected($type, 'textarea2'); ?> value="textarea2">Simple Textarea</option>
+										<option <?php selected($type, 'checkbox'); ?> value="checkbox">Checkbox</option>
+										<option <?php selected($type, 'upload'); ?> value="upload">Image Upload</option>
+									</select>
+								</div>
+							</div>
+							<div class="wpc-field-row">
+								<div class="wpc-field-label">Section <span class="required">*</span></div>
+								<div class="wpc-field-input">
+									<select name="wpc_sectionID" class="wpc_sectionID" required>
+										<option value="">Select Section</option>
+										<?php
+										$getSectionArray = $wpcInstance->getSections();
+										foreach($getSectionArray as $val){
+										?>
+											<option <?php selected($section, $val->id); ?> value="<?php echo esc_attr($val->id); ?>"><?php echo esc_html($val->wpc_Title); ?></option>
+										<?php } ?>
+									</select>
+									<p class="description">Assign this field to a section.</p>
+								</div>
+							</div>
+						</div>
+						<p class="submit" style="float:left;"> 
+							<input type="submit" name="wpc_save_field" class="button button-primary" value="Save Changes" />
+							<input type="hidden" name="action" value="<?php echo esc_attr($fromhiddenaction); ?>" />
+							<input type="hidden" name="id" value="<?php echo esc_attr($FieldId); ?>" />
+							<input type="hidden" name="wpc_optionKey" id="wpc_optionKey" value="<?php echo esc_attr($slug); ?>" />
+						</p>
+					</form>
 				</div>
-				<div class="am_input am_text">
-					<label for="wpc_description" style="width:100px;">Add Description</label>
-					<textarea name="wpc_description" id="wpc_description" class="wpc_description"><?php echo $desc; ?></textarea>
-					<small style="width:190px;">Enter short Description of field (Optional)</small>
-					<div class="clearfix"></div>
-				</div>
-				<div class="am_input am_text">
-					<label for="wpc_type" style="width:100px;">Type of Field</label>
-					<select name="wpc_type" class="wpc_type">
-						<option value="">Select Field Type</option>
-						<option <?php if($type =='text') : echo 'selected="selected"'; else: echo ''; endif; ?> value="text">Text</option>
-						<option <?php if($type =='upload') : echo 'selected="selected"'; else: echo ''; endif; ?> value="upload">Upload</option>
-						<option <?php if($type =='textarea2') : echo 'selected="selected"'; else: echo ''; endif; ?> value="textarea2">Textarea</option>
-						<option <?php if($type =='textarea') : echo 'selected="selected"'; else: echo ''; endif; ?> value="textarea">Html Textarea</option>
-					</select>
-					<small style="width:190px;">Please select the field<span class="mandatory">*</span></small>
-				<div class="clearfix"></div>
-				</div>
-				<div class="am_input am_text">
-					<label for="wpc_sectionID" style="width:100px;">Select Section</label>
-					<select name="wpc_sectionID" class="wpc_sectionID">
-					<?php 
-						$getSectionArray = $wpcInstance->getSections(); 
-						foreach ($getSectionArray as $value){
-						if ($section == $value->id):  $sel = 'selected="selected"'; else: $sel = ''; endif; 
-						?>
-						<option value="<?php echo $value->id; ?>" <?php echo $sel; ?>><?php echo $value->wpc_Title; ?></option>
-						<?php  } ?>
-					</select>
-					<small style="width:190px;">Select section for this field:<span class="mandatory">*</span></small>
-				<div class="clearfix"></div>
-				</div>
-				
 			</div>
-		</div><br>
-		<span class="submit">
-		<input type="hidden" name="wpc_optionKey" id ="wpc_optionKey" value="<?php echo $slug; ?>" />
-		<input type="hidden" name="action" value="<?php echo $fromhiddenaction; ?>" />
-		<input type="hidden" name="id" value="<?php echo $FieldId; ?>" />
-		<input name="wpc_save_field" type="submit" value="Save Changes" />
-				</span>
-				</form>
-	</div>
-</div>
+		</div>
 
-<div class="wrap am_wrap" style="float:left; width:30%">
-<div class="am_section" >
-			<table border="1" style="width:100%" id="fieldTable" class="tablesorter">
-			<thead>
- <tr>
-    <th>Field Name</th>
-	<th>Slug</th>
-    <th colspan=2 >Action</th>
-  </tr>
-  </thead>
-  <tbody>
-  <?php 
-	$getSectionArray = $wpcInstance->getAllFields(); 
-	if(!empty(	$getSectionArray)) :
-	foreach ($getSectionArray as $value){
-	?>
-	<tr>
-		<td><?php echo $value->wpc_name; ?></td>
-		<td><?php echo $value->wpc_optionKey; ?></td>
-		<td><a href="<?php echo wp_nonce_url(admin_url('admin.php?page=field-management&del='.$value->id.''), 'doing_something', 'deleteField');?>">Delete</a></td>		
-		<td><a href="<?php echo wp_nonce_url(admin_url('admin.php?page=field-management&edit='.$value->id.''), 'edit_something', 'editField');?>">Edit</a></td>
-	</tr>
-	<?php  } else :?>
-	
-	<tr><td colspan="4">No record found</td></tr>
-	<?php endif; ?>
-	</tbody>
-    </table>
-</div>
+		<div class="wpc-col-right">
+			<div class="postbox">
+				<div class="postbox-header"><h2 class="hndle"><span>All Fields</span></h2></div>
+				<div class="inside">
+					<div class="wpc-grid-table">
+						<div class="wpc-grid-header">
+							<div class="wpc-grid-col" style="flex: 2;">Field Name</div>
+							<div class="wpc-grid-col">Slug</div>
+							<div class="wpc-grid-col">Type</div>
+							<div class="wpc-grid-col-actions">Actions</div>
+						</div>
+						<?php
+						$getFieldsArray = $wpcInstance->getAllFields();
+						if($getFieldsArray) :
+						foreach($getFieldsArray as $val) :
+						?>
+							<div class="wpc-grid-row">
+								<div class="wpc-grid-col" style="flex: 2;"><strong><?php echo esc_html($val->wpc_name); ?></strong></div>
+								<div class="wpc-grid-col"><code><?php echo esc_html($val->wpc_optionKey); ?></code></div>
+								<div class="wpc-grid-col">
+									<?php
+									$field_types = array(
+										'text'      => 'Text Box',
+										'textarea'  => 'HTML Textarea',
+										'textarea2' => 'Simple Textarea',
+										'checkbox'  => 'Checkbox',
+										'upload'    => 'Image Upload'
+									);
+									echo esc_html( isset( $field_types[ $val->wpc_type ] ) ? $field_types[ $val->wpc_type ] : $val->wpc_type );
+									?>
+								</div>
+								<div class="wpc-grid-col-actions">
+									<span class="row-actions">
+										<a href="<?php echo wp_nonce_url(admin_url('admin.php?page=field-management&edit='.$val->id.''), 'edit_something', 'editField');?>">Edit</a>
+										 | 
+										<a href="<?php echo wp_nonce_url(admin_url('admin.php?page=field-management&del='.$val->id.''), 'doing_something', 'deleteField');?>" class="delete" onclick="return confirm('Are you sure you want to delete this field?');">Delete</a>
+									</span>
+								</div>
+							</div>
+						<?php endforeach; else: ?>
+							<div class="wpc-grid-row"><div class="wpc-grid-col">No fields found. Create your first field using the form.</div></div>
+						<?php endif; ?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <?php 
 if (!isset($_GET['editField']) || !wp_verify_nonce($_GET['editField'] , 'edit_something' )) { ?>
 <script>
-jQuery(document).ready(function() {
-	jQuery("#wpc_name").blur(function() {
-		var slug = jQuery('#wpc_name').val();
-        slug=slug.toLowerCase();
-        slug=slug.replace(/(^\s+|[^a-zA-Z0-9 ]+|\s+$)/g,"");
-        slug=slug.replace(/\s+/g, "-");
-		jQuery('#wpc_optionKeyshow').val(slug);
-		jQuery('#wpc_optionKey').val(slug);
-	});
-	jQuery("#wpc_optionKeyshow ,.wpc_type,.wpc_sectionID").focusout(function() {
-		var slug = jQuery('#wpc_optionKeyshow').val();
-        slug=slug.toLowerCase();
-        slug=slug.replace(/\s+/g, "-");
-		jQuery.ajax({
-			url : '<?php echo admin_url('admin-ajax.php'); ?>',
-			type : 'POST',
-			dataType : 'json', 
-			data : {'action': 'wpc_check_slug','slug': slug},
-			success : function(response){
-			if(response == ''){
-			alert("slug Invalid/already exist in our records please use another slug");
-				jQuery('#wpc_optionKeyshow').val("");
-				jQuery('#wpc_optionKey').val("");
-			} else {
-				jQuery('#wpc_optionKeyshow').val(response);
-				jQuery('#wpc_optionKey').val(response);
-			}
-			}
-		});
-	});
+jQuery(document).ready(function($) {
+    // Generate slug as you type
+    $("#wpc_name").on('input', function() {
+        var slug = $(this).val()
+            .toLowerCase()
+            .replace(/[^\w\s-]/g, '') // Remove non-word chars
+            .replace(/\s+/g, '-')      // Replace spaces with -
+            .replace(/--+/g, '-')     // Replace multiple - with single -
+            .trim();
+        
+        $('#wpc_optionKeyshow, #wpc_optionKey').val(slug);
+    });
+
+    // Final check and uniqueness check on blur/change
+    $("#wpc_optionKeyshow, .wpc_type, .wpc_sectionID").on('blur change', function() {
+        var slug = $('#wpc_optionKeyshow').val().toLowerCase().replace(/\s+/g, "-").trim();
+        if (!slug) return;
+
+        $.ajax({
+            url: '<?php echo admin_url("admin-ajax.php"); ?>',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                'action': 'wpc_check_slug',
+                'slug': slug
+            },
+            success: function(response) {
+                if (response === '' || response === false) {
+                    alert("Slug is invalid or already exists. Please choose another.");
+                    $('#wpc_optionKeyshow, #wpc_optionKey').val("");
+                } else {
+                    $('#wpc_optionKeyshow, #wpc_optionKey').val(response);
+                }
+            },
+            error: function() {
+                console.error("Slug check failed.");
+            }
+        });
+    });
 });
 </script>
 
