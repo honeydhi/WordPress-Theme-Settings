@@ -1,6 +1,6 @@
 <?php
 /*
-    Plugin Name: WordPress Custom settings 
+    Plugin Name: WPC Custom settings 
     Plugin URI: https://www.linkedin.com/in/davinder-singh-ai/
     Description: Plugin for setting up the basic information like social media settings and footer content, this plugin helps the developer to save some of miscellaneous items easily there is no need to make any specific widgets and post type just save all the values in options.
     Author: Davinder Singh
