@@ -10,9 +10,9 @@
 
 		<h2>Using in Templates</h2>
 		<p>Retrieve a custom field value in your theme template with the standard WordPress function:</p>
-		<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) ); ?>images/optiontag.png" alt="get_option example" />
+		<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) ); ?>images/optiontag.png" alt="WPC get_option example" />
 		<p>Where <code>$option</code> is your field slug, which you can find on the <strong>Fields Management</strong> tab:</p>
-		<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) ); ?>images/slugs.png" alt="Field slugs" />
+		<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) ); ?>images/slugs.png" alt="WPC Field slugs" />
 
 		<hr />
 

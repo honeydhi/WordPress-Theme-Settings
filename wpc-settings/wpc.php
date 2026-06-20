@@ -1,18 +1,18 @@
 <?php
 /*
     Plugin Name: WordPress Custom settings 
-    Plugin URI: https://about.me/honeydavinder
+    Plugin URI: https://www.linkedin.com/in/davinder-singh-ai/
     Description: Plugin for setting up the basic information like social media settings and footer content, this plugin helps the developer to save some of miscellaneous items easily there is no need to make any specific widgets and post type just save all the values in options.
     Author: Davinder Singh
-    Version: 1.1
-    Author URI: https://about.me/honeydavinder
+    Version: 1.2
+    Author URI: https://www.linkedin.com/in/davinder-singh-ai/
     Requires at least: 6.0
     Tested up to: 7.0
     Requires PHP: 7.4
     */
 
 /* Set your theme name & shortname to get options fields*/
-$themename = "WordPress Custom Settings";
+$themename = "WPC Custom Settings";
 $shortname = "wpc";
 include( plugin_dir_path( __FILE__ ) . 'inc/wpc_class.php');
 include( plugin_dir_path( __FILE__ ) . 'inc/shortcodes.php');
@@ -117,7 +117,7 @@ $wp_cats = array();
 				die;
 			}
 	}
-		add_menu_page($themename, $themename, 'manage_options', 'wpc-management', 'wpc_admin',  plugin_dir_url( __FILE__ ) . 'images/wpc_theme_settings.png');
+		add_menu_page($themename, $themename, 'manage_options', 'wpc-management', 'wpc_admin', '');
 		
 	}
 	

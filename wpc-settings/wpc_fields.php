@@ -70,7 +70,8 @@ if(!empty($_POST) && isset($_POST['wpc_save_field']) && $_POST['wpc_save_field']
 							<div class="wpc-field-row">
 								<div class="wpc-field-label">Slug <span class="required">*</span></div>
 								<div class="wpc-field-input">
-									<input name="wpc_optionKeyshow" id="wpc_optionKeyshow" type="text" value="<?php echo esc_attr($slug); ?>" <?php echo esc_attr($disabled); ?> />
+									<input name="wpc_optionKeyshow" id="wpc_optionKeyshow" type="text" value="<?php echo esc_attr($slug); ?>" <?php echo esc_attr($disabled); ?> required />
+									<p id="wpc-slug-error" style="color: #d63638; margin: 4px 0 0 0; display: none; font-size: 13px; font-weight: 600;"></p>
 									<p class="description">Used to retrieve the field value.</p>
 								</div>
 							</div>
@@ -184,6 +185,12 @@ jQuery(document).ready(function($) {
             .trim();
         
         $('#wpc_optionKeyshow, #wpc_optionKey').val(slug);
+        $('#wpc-slug-error').hide();
+    });
+
+    // Hide error when editing the slug directly
+    $("#wpc_optionKeyshow").on('input', function() {
+        $('#wpc-slug-error').hide();
     });
 
     // Final check and uniqueness check on blur/change
@@ -201,9 +208,10 @@ jQuery(document).ready(function($) {
             },
             success: function(response) {
                 if (response === '' || response === false) {
-                    alert("Slug is invalid or already exists. Please choose another.");
+                    $('#wpc-slug-error').text("Slug is invalid or already exists. Please choose another.").show();
                     $('#wpc_optionKeyshow, #wpc_optionKey').val("");
                 } else {
+                    $('#wpc-slug-error').hide();
                     $('#wpc_optionKeyshow, #wpc_optionKey').val(response);
                 }
             },
